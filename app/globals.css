@@ -1,0 +1,64 @@
+/* 1. Import Font first */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(0 0% 8%);
+  --color-foreground: hsl(0 0% 98%);
+  --color-card: hsl(0 0% 12%);
+  --color-card-foreground: hsl(0 0% 98%);
+  --color-primary: hsl(43 74% 66%);
+  --color-primary-foreground: hsl(0 0% 10%);
+  --color-secondary: hsl(210 8% 75%);
+  --color-secondary-foreground: hsl(0 0% 10%);
+  --color-muted: hsl(0 0% 15%);
+  --color-muted-foreground: hsl(0 0% 65%);
+  --color-border: hsl(43 30% 25%);
+  --color-gold: hsl(43 74% 66%);
+  --color-gold-dark: hsl(43 74% 50%);
+  --color-silver: hsl(210 8% 75%);
+  --color-silver-dark: hsl(210 8% 60%);
+  --color-charcoal: hsl(0 0% 12%);
+  --color-charcoal-light: hsl(0 0% 18%);
+}
+
+@layer base {
+  body {
+    font-family: "Inter", sans-serif;
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      var(--color-gold) 0%,
+      var(--color-gold-dark) 100%
+    );
+  }
+
+  .text-gradient-silver {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      var(--color-silver) 0%,
+      var(--color-silver-dark) 100%
+    );
+  }
+
+  .glow-gold {
+    box-shadow: 0 10px 40px -10px hsl(43 74% 66% / 0.4);
+  }
+}
