@@ -19,6 +19,10 @@ import {
   Phone,
   MapPin,
   Clock,
+  CheckCircle,
+  Award,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 
 // ============================================================================
@@ -129,6 +133,14 @@ export const Accordion: React.FC<AccordionProps> = ({
   return <div className={cn("space-y-2", className)}>{children}</div>;
 };
 
+const AccordionItemContext = React.createContext<{
+  isOpen: boolean;
+  toggle: () => void;
+}>({
+  isOpen: false,
+  toggle: () => {},
+});
+
 export interface AccordionItemProps {
   value: string;
   className?: string;
@@ -140,14 +152,17 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
   children,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div
-      className={cn("border-b", className)}
-      data-state={isOpen ? "open" : "closed"}
-    >
-      <div onClick={() => setIsOpen(!isOpen)}>{children}</div>
-    </div>
+    <AccordionItemContext.Provider value={{ isOpen, toggle }}>
+      <div
+        className={cn("border-b", className)}
+        data-state={isOpen ? "open" : "closed"}
+      >
+        {children}
+      </div>
+    </AccordionItemContext.Provider>
   );
 };
 
@@ -160,8 +175,11 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = ({
   className,
   children,
 }) => {
+  const { isOpen, toggle } = React.useContext(AccordionItemContext);
+
   return (
     <button
+      onClick={toggle}
       className={cn(
         "flex w-full items-center justify-between py-4 font-medium transition-all hover:underline",
         className
@@ -169,7 +187,10 @@ export const AccordionTrigger: React.FC<AccordionTriggerProps> = ({
     >
       {children}
       <svg
-        className="h-4 w-4 shrink-0 transition-transform duration-200"
+        className={cn(
+          "h-4 w-4 shrink-0 transition-transform duration-200",
+          isOpen && "rotate-180"
+        )}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -194,8 +215,17 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
   className,
   children,
 }) => {
+  const { isOpen } = React.useContext(AccordionItemContext);
+
+  if (!isOpen) return null;
+
   return (
-    <div className={cn("overflow-hidden text-sm transition-all", className)}>
+    <div
+      className={cn(
+        "overflow-hidden text-sm transition-all animate-accordion-down",
+        className
+      )}
+    >
       <div className="pb-4 pt-0">{children}</div>
     </div>
   );
@@ -246,7 +276,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             onClick={() => scrollToSection("home")}
             className="hover:opacity-80 transition-opacity"
           >
-            <img src={logoSrc} alt="SilverGold.ID" className="h-8 w-auto" />
+            <img src={logoSrc} alt="silvergold.id" className="h-25 w-auto" />
           </button>
 
           {/* Desktop Menu */}
@@ -313,21 +343,56 @@ export const Hero: React.FC<HeroProps> = ({
   onWhatsAppClick,
   heroImageSrc,
 }) => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section id="home" className="min-h-screen flex items-center pt-20">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Investasi <span className="text-gradient-gold">Emas</span> &{" "}
-              <span className="text-gradient-silver">Perak</span> dengan Aman.
+            <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+              Mulai Investasi <span className="text-gradient-gold">Emas</span> &{" "}
+              <span className="text-gradient-silver">Perak</span> Hari Ini –
+              Dari 1 Gram saja.
             </h1>
 
             <p className="text-xl text-muted-foreground leading-relaxed">
-              SilverGold.ID membantu Anda membangun dan melindungi kekayaan
-              dengan emas dan perak fisik bersertifikat.
+              Mulai bangun portofolio logam mulia Anda tanpa tekanan, tanpa
+              minimal pembelian besar, dan tanpa proses rumit. Transparan,
+              terpercaya, dan terjangkau untuk semua kalangan.
             </p>
+
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <span className="text-foreground">
+                  Cocok untuk Tabungan Jangka Panjang
+                </span>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <span className="text-foreground">
+                  Nilai Stabil & Tahan Inflasi
+                </span>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <span className="text-foreground">
+                  Pembelian Mudah, Mulai dari 1 Gram
+                </span>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <span className="text-foreground">
+                  Produk Resmi, Terverifikasi, & Siap Disimpan
+                </span>
+              </div>
+            </div>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
@@ -338,17 +403,28 @@ export const Hero: React.FC<HeroProps> = ({
               >
                 Pesan via WhatsApp
               </Button>
+              <Button
+                size="lg"
+                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-lg px-8"
+                onClick={() => scrollToSection("catalog")}
+              >
+                Lihat Katalog Produk
+              </Button>
             </div>
 
             {/* Trust Indicators */}
             <div className="flex flex-wrap gap-6 pt-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <ShieldCheck className="h-5 w-5 text-gold" />
-                <span className="text-sm">Batangan Bersertifikat</span>
+                <span className="text-sm">Toko terpercaya</span>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <TruckIcon className="h-5 w-5 text-gold" />
                 <span className="text-sm">Pengiriman Aman</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Award className="h-5 w-5 text-gold" />
+                <span className="text-sm">Bersertifikat</span>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <RefreshCw className="h-5 w-5 text-gold" />
@@ -383,7 +459,7 @@ export const PriceBar: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <span className="font-semibold text-foreground">
-              Harga Pasar Indikatif (Hari Ini)
+              Harga Pasar International Hari Ini
             </span>
             <div className="flex gap-4 text-sm">
               <span className="text-gold">● Emas</span>
@@ -437,18 +513,42 @@ export const Catalog: React.FC<CatalogProps> = ({
     return true;
   });
 
+  // Generate Product schema for first few products (to avoid excessive data)
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: products.slice(0, 8).map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: product.name,
+        description: product.description,
+        offers: {
+          "@type": "Offer",
+          price: product.price.replace(/[^0-9]/g, ""),
+          priceCurrency: "IDR",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: "silvergold.id",
+          },
+        },
+      },
+    })),
+  };
+
   return (
     <section id="catalog" className="py-20 bg-charcoal/50">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-            Katalog Emas & Silver{" "}
-            <span className="text-gradient-gold">SilverGold.ID</span>
+            Katalog Logam <span className="text-gradient-gold">Mulia</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Semua produk adalah batangan fisik dengan kemurnian 99.9% - 99.99%
-            dan pengiriman yang aman.
+            Temukan pilihan emas dan perak dari berbagai brand resmi, tersedia
+            dalam beragam ukuran — mulai dari 1 gram hingga 100 gram.
           </p>
         </div>
 
@@ -494,9 +594,9 @@ export const Catalog: React.FC<CatalogProps> = ({
           {filteredProducts.map((product) => (
             <Card
               key={product.id}
-              className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group"
+              className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-full"
             >
-              <CardContent className="p-0">
+              <CardContent className="p-0 flex flex-col flex-1">
                 {/* Product Image */}
                 <div className="relative overflow-hidden bg-charcoal-light">
                   <img
@@ -520,7 +620,7 @@ export const Catalog: React.FC<CatalogProps> = ({
                 </div>
 
                 {/* Product Info */}
-                <div className="p-5 space-y-3">
+                <div className="p-5 space-y-3 flex flex-col flex-1">
                   <h3 className="text-xl font-semibold">{product.name}</h3>
 
                   <div className="flex items-center justify-between text-sm">
@@ -543,7 +643,7 @@ export const Catalog: React.FC<CatalogProps> = ({
                     {product.description}
                   </p>
 
-                  <div className="pt-3 border-t border-border">
+                  <div className="pt-3 border-t border-border mt-auto">
                     <p className="text-2xl font-bold text-gold mb-1">
                       {product.price}
                     </p>
@@ -575,28 +675,34 @@ export const Catalog: React.FC<CatalogProps> = ({
 
 const benefitsData = [
   {
-    icon: ShieldCheck,
-    title: "Keaslian Bersertifikat",
+    icon: TrendingUp,
+    title: "Harga Real-Time & Transparan",
     description:
-      "Setiap batangan dilengkapi sertifikat keaslian dari refiner terpercaya.",
+      "Harga diperbarui otomatis setiap hari. Tidak ada markup tersembunyi, tidak ada manipulasi harga.",
   },
   {
-    icon: Package,
-    title: "Kemasan Aman & Pengiriman Berasuransi",
+    icon: Award,
+    title: "Produk Asli & Terverifikasi",
     description:
-      "Kemasan premium dengan jaminan asuransi penuh selama pengiriman.",
+      "Semua logam mulia berasal dari brand resmi dan distributor terpercaya. Kami hanya menjual produk yang 100% asli.",
   },
   {
-    icon: RefreshCw,
-    title: "Dukungan Buyback",
+    icon: Zap,
+    title: "Proses Pembelian yang Sederhana",
     description:
-      "Kami menawarkan layanan buyback untuk ketenangan pikiran dan kebutuhan likuiditas Anda.",
+      "Tidak ada prosedur rumit. Pembelian sengaja kami desain cepat & efisien.",
+  },
+  {
+    icon: TruckIcon,
+    title: "Pengiriman Aman & Terlindungi",
+    description:
+      "Setiap paket dikemas rapi dengan standar keamanan tinggi agar sampai dengan kondisi yang baik.",
   },
   {
     icon: MessageSquare,
-    title: "Konsultasi Personal via WhatsApp",
+    title: "Layanan Responsif",
     description:
-      "Akses langsung ke tim spesialis kami untuk panduan dan pertanyaan.",
+      "Tim kami siap membantu pertanyaan Anda dengan cepat, tanpa harus menunggu lama atau bolak-balik tanya harga.",
   },
 ];
 
@@ -606,31 +712,34 @@ export const Benefits: React.FC = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-            Mengapa <span className="text-gradient-gold">SilverGold.ID?</span>
+            Kenapa Memilih{" "}
+            <span className="text-gradient-gold">silvergold.id</span>?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Kami menyediakan pengalaman investasi logam mulia yang lengkap
-            dengan kepercayaan dan transparansi.
+            Harga real-time, produk resmi, dan proses pembelian yang dibuat
+            sesederhana mungkin.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {benefitsData.map((benefit, index) => (
-            <Card
-              key={index}
-              className="bg-card border-gold/30 hover:border-gold transition-all duration-300 hover:glow-gold"
-            >
-              <CardContent className="p-6 text-center space-y-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/10 border border-gold/50">
-                  <benefit.icon className="h-8 w-8 text-gold" />
-                </div>
-                <h3 className="text-xl font-semibold">{benefit.title}</h3>
-                <p className="text-muted-foreground text-sm">
-                  {benefit.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="overflow-x-auto pb-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 min-w-max md:min-w-0">
+            {benefitsData.map((benefit, index) => (
+              <Card
+                key={index}
+                className="bg-card border-gold/30 hover:border-gold transition-all duration-300 hover:glow-gold"
+              >
+                <CardContent className="p-6 text-center space-y-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/10 border border-gold/50">
+                    <benefit.icon className="h-8 w-8 text-gold" />
+                  </div>
+                  <h3 className="text-xl font-semibold">{benefit.title}</h3>
+                  <p className="text-muted-foreground text-sm">
+                    {benefit.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -645,29 +754,30 @@ const stepsData = [
   {
     icon: Search,
     number: "01",
-    title: "Pilih Produk Anda",
+    title: "Pilih Produk di Katalog",
     description:
-      "Jelajahi katalog kami dan pilih batangan emas atau perak yang sesuai dengan tujuan investasi Anda.",
+      "Telusuri katalog kami dan pilih logam mulia yang Anda inginkan, mulai dari berbagai brand dan ukuran.",
   },
   {
     icon: MessageCircle,
     number: "02",
-    title: "Klik 'Pesan via WhatsApp'",
-    description: "Mulai percakapan dengan tim kami langsung melalui WhatsApp.",
+    title: "Hubungi Kami via WhatsApp (Chat)",
+    description:
+      "Informasikan detail produk pilihan Anda. Tim kami akan menghitung total belanja, termasuk ongkir dan opsi asuransi.",
   },
   {
     icon: CreditCard,
     number: "03",
-    title: "Konfirmasi Harga & Pembayaran",
+    title: "Lakukan Pembayaran ke Rekening Resmi",
     description:
-      "Dapatkan konfirmasi harga final dan selesaikan pembayaran aman dengan panduan kami.",
+      "Kami akan mengirimkan nomor rekening resmi SilverGold. Setelah pembayaran terverifikasi, pesanan langsung diproses.",
   },
   {
     icon: TruckIcon,
     number: "04",
-    title: "Terima Pengiriman Berasuransi",
+    title: "Pengiriman Aman & Terproteksi",
     description:
-      "Logam mulia Anda tiba dengan kemasan aman dan jaminan asuransi penuh.",
+      "Produk dikemas rapi dan dikirim dengan standar keamanan tinggi. Asuransi tersedia sesuai permintaan.",
   },
 ];
 
@@ -677,11 +787,12 @@ export const HowToBuy: React.FC = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-            Cara <span className="text-gradient-gold">Beli</span>
+            Cara Membeli di{" "}
+            <span className="text-gradient-gold">silvergold.id</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Proses yang sederhana, aman, dan transparan dari pemilihan hingga
-            pengiriman.
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Proses pembelian dirancang sederhana dan aman, agar Anda dapat
+            bertransaksi dengan nyaman.
           </p>
         </div>
 
@@ -693,8 +804,8 @@ export const HowToBuy: React.FC = () => {
                 <div className="hidden lg:block absolute top-16 left-1/2 w-full h-0.5 bg-gradient-to-r from-gold/50 to-gold/20" />
               )}
 
-              <Card className="relative bg-card border-border hover:border-gold/50 transition-all duration-300">
-                <CardContent className="p-6 text-center space-y-4">
+              <Card className="relative bg-card border-border hover:border-gold/50 transition-all duration-300 h-full flex flex-col">
+                <CardContent className="p-6 text-center space-y-4 flex flex-col flex-1 items-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gold/10 border-2 border-gold/50 relative">
                     <step.icon className="h-10 w-10 text-gold" />
                     <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gold text-primary-foreground flex items-center justify-center text-sm font-bold">
@@ -753,6 +864,19 @@ const faqsData = [
 ];
 
 export const FAQ: React.FC = () => {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqsData.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <section id="faq" className="py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
@@ -763,7 +887,7 @@ export const FAQ: React.FC = () => {
           </h2>
           <p className="text-lg text-muted-foreground">
             Semua yang perlu Anda ketahui tentang membeli logam mulia dengan
-            SilverGold.ID
+            silvergold.id
           </p>
         </div>
 
@@ -784,6 +908,12 @@ export const FAQ: React.FC = () => {
           ))}
         </Accordion>
       </div>
+
+      {/* FAQ Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
     </section>
   );
 };
@@ -840,11 +970,7 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid md:grid-cols-2 gap-8 pb-8 border-b border-border">
           {/* Left - Brand */}
           <div>
-            <img
-              src={logoSrc}
-              alt="SilverGold.ID"
-              className="h-8 w-auto mb-3"
-            />
+            <img src={logoSrc} alt="silvergold.id" className="h-20 w-auto" />
             <p className="text-muted-foreground max-w-md">
               Mitra terpercaya Anda untuk investasi emas dan perak fisik.
               Membangun dan melindungi kekayaan melalui logam mulia
@@ -861,7 +987,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <Clock className="h-5 w-5 text-gold md:order-2" />
-              <span className="text-sm">24 Hours</span>
+              <span className="text-sm">Setiap Hari, 24 Jam</span>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <MessageCircle className="h-5 w-5 text-gold md:order-2" />
@@ -873,7 +999,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Copyright */}
         <div className="pt-8 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} SilverGold.ID. Hak cipta
+            &copy; {new Date().getFullYear()} silvergold.id. Hak cipta
             dilindungi.
           </p>
           <p className="mt-2">

@@ -13,7 +13,7 @@ export default function Home() {
       heroImageSrc="https://silvergold.lovable.app/assets/hero-precious-metals-CLcrZG1n.jpg"
       goldBarImageSrc="https://silvergold.lovable.app/assets/gold-bar-D2ySwO4d.jpg"
       silverBarImageSrc="https://silvergold.lovable.app/assets/silver-bar-BlTK1x4I.jpg"
-      logoSrc="/silverlogoblackbg.png"
+      logoSrc="https://images.pexels.com/photos/34928833/pexels-photo-34928833.png?auto=compress&cs=tinysrgb&w=600&loading=lazy"
       whatsappUrl="https://wa.me/6285110328180"
       onWhatsAppClick={() =>
         window.open("https://wa.me/6285110328180", "_blank")
@@ -29,10 +29,7 @@ export default function Home() {
           description:
             "1g gold bar with certificate, ideal for first-time investors.",
           sort_order: 1,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:47:10.923403+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "bcae1baa-eccb-482e-a994-c52686efb459",
@@ -43,10 +40,7 @@ export default function Home() {
           price: "Rp 12.258.750",
           description: "5g gold bar for gradual wealth accumulation.",
           sort_order: 2,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "d8051cac-d741-420e-a197-dcb3a096f3e4",
@@ -58,10 +52,7 @@ export default function Home() {
           description:
             "10g gold bar, popular choice for diversified portfolios.",
           sort_order: 3,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "2c4d6dd2-1f76-4676-93db-76722355e774",
@@ -72,10 +63,7 @@ export default function Home() {
           price: "Rp 61.017.600",
           description: "25g gold bar for serious long-term investment.",
           sort_order: 4,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "bd9582fa-028c-49a0-80b3-3c06fb1d9114",
@@ -86,10 +74,7 @@ export default function Home() {
           price: "Rp 121.952.250",
           description: "50g gold bar, efficient for larger capital deployment.",
           sort_order: 5,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "a4e101c7-50cd-4ff2-a8c4-e76b62d000cd",
@@ -100,10 +85,7 @@ export default function Home() {
           price: "Rp 243.822.600",
           description: "100g gold bar for high-value, compact storage.",
           sort_order: 6,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "f848a734-d7c6-455a-920c-e3bf509478fc",
@@ -115,10 +97,7 @@ export default function Home() {
           description:
             "500g gold bar, suitable for advanced investors and asset protection.",
           sort_order: 7,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "dee5863a-3fb1-457c-a8e3-11ac774d4fc4",
@@ -129,10 +108,7 @@ export default function Home() {
           price: "Rp 2.436.630.000",
           description: "1kg gold bar, institutional-level gold holding.",
           sort_order: 8,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "aca937a3-fcdd-4407-8457-e382707fce96",
@@ -143,10 +119,7 @@ export default function Home() {
           price: "Rp 28.971",
           description: "1g silver bar, accessible entry to silver investment.",
           sort_order: 9,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "3ca7e15d-8c8f-4f1e-a480-fb143f3425df",
@@ -157,10 +130,7 @@ export default function Home() {
           price: "Rp 144.853",
           description: "5g silver bar for small but consistent stacking.",
           sort_order: 10,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "9087468c-609a-421b-821a-d7b3f27b5132",
@@ -171,10 +141,7 @@ export default function Home() {
           price: "Rp 289.706",
           description: "10g silver bar, popular size for collectors.",
           sort_order: 11,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "3fa73ab5-4a55-4f7b-a4cf-9f30399560f8",
@@ -185,10 +152,7 @@ export default function Home() {
           price: "Rp 724.264",
           description: "25g silver bar, ideal for building silver reserves.",
           sort_order: 12,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "b5ccea48-3f6e-49f5-8f8f-cfed06b2af2e",
@@ -199,10 +163,7 @@ export default function Home() {
           price: "Rp 1.448.528",
           description: "50g silver bar for medium-sized investments.",
           sort_order: 13,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "dc0bfae1-1a7f-4463-965e-e868ff8531a1",
@@ -213,10 +174,7 @@ export default function Home() {
           price: "Rp 2.897.055",
           description: "100g silver bar, efficient in terms of spread vs size.",
           sort_order: 14,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "9b4cee61-f94c-4aa5-88d7-2f63ef1dab25",
@@ -227,10 +185,7 @@ export default function Home() {
           price: "Rp 14.485.275",
           description: "500g silver bar, great for long-term silver stacking.",
           sort_order: 15,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
         {
           id: "890a4c84-e8e7-4b93-a7e6-c7eff9f98f98",
@@ -241,10 +196,7 @@ export default function Home() {
           price: "Rp 28.970.550",
           description: "1kg silver bar, bulk position for silver believers.",
           sort_order: 16,
-          // created_at: "2025-11-25T12:34:45.376762+00:00",
-          // updated_at: "2025-11-25T12:34:45.376762+00:00",
           condition: "Baru",
-          // stock: 0,
         },
       ]}
     />
