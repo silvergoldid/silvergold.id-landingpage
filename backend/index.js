@@ -17,7 +17,7 @@ const axiosInstance = axios.create({
 
 // Initialize the Express app
 const allowedOrigins = [
-  "https://silvergold-id-landingpage.vercel.app/",
+  "https://silvergold-id-landingpage.vercel.app",
   "http://localhost:3000",
 ];
 const app = express();
