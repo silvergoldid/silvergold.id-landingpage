@@ -50,7 +50,7 @@ export const Benefits: React.FC = () => {
           </p>
         </div>
 
-        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0">
+        <div className="overflow-x-auto overflow-y-hidden pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <div className="flex gap-6 min-w-max">
             {benefitsData.map((benefit, index) => (
               <Card
