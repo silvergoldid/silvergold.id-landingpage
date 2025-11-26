@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface NavigationProps {
@@ -12,6 +12,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   logoSrc,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,6 +91,74 @@ export const Navigation: React.FC<NavigationProps> = ({
               <MessageCircle className="mr-2 h-4 w-4" />
               Konsultasi
             </Button>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="md:hidden p-2 text-foreground hover:text-gold transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden border-t border-border bg-background/95 backdrop-blur-md transition-all duration-300 ease-in-out overflow-hidden ${
+            isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+            <button
+              onClick={() => {
+                scrollToSection("home");
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+            >
+              Beranda
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("catalog");
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+            >
+              Katalog
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("how-to-buy");
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+            >
+              Cara Beli
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("faq");
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+            >
+              FAQ
+            </button>
+            <button
+              onClick={() => {
+                scrollToSection("contact");
+                setIsMobileMenuOpen(false);
+              }}
+              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+            >
+              Kontak
+            </button>
           </div>
         </div>
       </div>

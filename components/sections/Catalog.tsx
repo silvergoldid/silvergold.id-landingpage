@@ -77,36 +77,36 @@ export const Catalog: React.FC<CatalogProps> = ({
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-12 max-w-2xl mx-auto">
           <Button
             variant={filter === "Semua" ? "default" : "outline"}
-            className={
+            className={`w-full sm:w-auto ${
               filter === "Semua"
                 ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                 : "border-border hover:border-gold"
-            }
+            }`}
             onClick={() => setFilter("Semua")}
           >
             Semua
           </Button>
           <Button
             variant={filter === "Emas" ? "default" : "outline"}
-            className={
+            className={`w-full sm:w-auto ${
               filter === "Emas"
                 ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                 : "border-border hover:border-gold"
-            }
+            }`}
             onClick={() => setFilter("Emas")}
           >
             Batangan Emas
           </Button>
           <Button
             variant={filter === "Perak" ? "default" : "outline"}
-            className={
+            className={`w-full sm:w-auto ${
               filter === "Perak"
                 ? "bg-silver hover:bg-silver-dark text-primary-foreground"
                 : "border-border hover:border-silver"
-            }
+            }`}
             onClick={() => setFilter("Perak")}
           >
             Batangan Perak
@@ -115,12 +115,12 @@ export const Catalog: React.FC<CatalogProps> = ({
 
         {/* Product Grid */}
         {/* Mobile/Medium: Horizontal scroll, Large: 4-column grid */}
-        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-x-visible">
-          <div className="flex lg:grid lg:grid-cols-4 gap-6 min-w-max lg:min-w-0">
+        <div className="overflow-x-auto overflow-y-hidden pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-x-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="flex lg:grid lg:grid-cols-4 gap-6 min-w-max lg:min-w-0 items-stretch">
             {filteredProducts.map((product) => (
               <Card
                 key={product.id}
-                className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-full w-[320px] lg:w-auto flex-shrink-0 lg:flex-shrink"
+                className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-[560px] w-[320px] lg:h-auto lg:w-auto flex-shrink-0 lg:flex-shrink"
               >
                 <CardContent className="p-0 flex flex-col flex-1">
                   {/* Product Image */}
@@ -179,10 +179,10 @@ export const Catalog: React.FC<CatalogProps> = ({
                     </div>
 
                     <Button
-                      className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300"
+                      className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300 lg:text-xs lg:px-3 lg:py-2 xl:text-sm xl:px-4 xl:py-3 whitespace-nowrap"
                       onClick={onWhatsAppClick}
                     >
-                      <MessageCircle className="mr-2 h-4 w-4" />
+                      <MessageCircle className="mr-2 h-4 w-4 lg:h-3 lg:w-3 xl:h-4 xl:w-4" />
                       Pesan via WhatsApp
                     </Button>
                   </div>

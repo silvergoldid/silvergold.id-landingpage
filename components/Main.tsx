@@ -256,9 +256,37 @@ export const IndexPage = () => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   fetchItems();
-  // }, []);
+  const checkShippingRates = async () => {
+    const payload = {
+      weight: 1, // Hardcoded weight
+      zipcode_pickup: "12530", // Hardcoded pickup zipcode
+      destination: "Denpasar Selatan, Kota Denpasar, Bali 80114, Indonesia", // Hardcoded destination
+      zipcode_destination: "80222", // Hardcoded destination zipcode
+    };
+    try {
+      // Make the API request
+      const response = await fetch("http://localhost:5000/v1/check-ongkir", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // Parse the response
+      const data = await response.json();
+      console.log(data);
+      // Check if the response is successful
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while checking shipping rates.");
+    }
+  };
+
+  useEffect(() => {
+    // fetchItems();
+    checkShippingRates();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

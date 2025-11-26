@@ -21,7 +21,7 @@ export const Footer: React.FC<FooterProps> = ({
   );
 
   return (
-    <footer id="contact" className="bg-charcoal border-t border-gold/30 py-12">
+    <footer id="contact" className="bg-charcoal border-t border-gold/30 py-20">
       <div className="container mx-auto px-4 lg:px-8">
         {/* WhatsApp CTA Section */}
         <div className="bg-card border border-gold/50 rounded-xl p-8 mb-12 text-center">

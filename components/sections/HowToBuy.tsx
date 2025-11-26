@@ -49,7 +49,7 @@ export const HowToBuy: React.FC = () => {
         </div>
 
         {/* Mobile/Medium: Horizontal scroll, Large: 4-column grid */}
-        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-x-visible">
+        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-x-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <div className="flex lg:grid lg:grid-cols-4 gap-8 min-w-max lg:min-w-0">
             {stepsData.map((step, index) => (
               <div key={index} className="relative">
