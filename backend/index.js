@@ -4,7 +4,16 @@ const axios = require("axios");
 const helmet = require("helmet");
 const cheerio = require("cheerio");
 const express = require("express");
+const http = require("http");
+const https = require("https");
 const { createClient } = require("@supabase/supabase-js"); // Supabase client
+
+// Create axios instance with connection pooling for better performance
+const axiosInstance = axios.create({
+  httpAgent: new http.Agent({ keepAlive: true, maxSockets: 50 }),
+  httpsAgent: new https.Agent({ keepAlive: true, maxSockets: 50 }),
+  timeout: 10000, // 10 seconds timeout
+});
 
 // Initialize the Express app
 const allowedOrigins = [
@@ -105,7 +114,7 @@ app.post("/v1/list-location", async (req, res) => {
 
   try {
     // Call the external API (similar to the one shown in the image)
-    const response = await axios.post(
+    const response = await axiosInstance.post(
       "https://paxel.co/api/v1/internal-autocomplete",
       {
         searchstr: searchstr,
@@ -144,8 +153,8 @@ app.post("/v1/check-ongkir", async (req, res) => {
     formData.append("destination_counter", "0");
     formData.append("button", "");
 
-    // Call the external API with form data
-    const response = await axios.post(
+    // Call the external API with form data using connection pooling
+    const response = await axiosInstance.post(
       "https://paxel.co/id/check-rates",
       formData,
       {
@@ -176,8 +185,8 @@ app.post("/v1/check-resi", async (req, res) => {
   }
 
   try {
-    // Call the external API to track the shipment
-    const response = await axios.post(
+    // Call the external API to track the shipment using connection pooling
+    const response = await axiosInstance.post(
       "https://paxel.co/en/track-shipments",
       null,
       {
