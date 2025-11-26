@@ -114,13 +114,13 @@ export const Catalog: React.FC<CatalogProps> = ({
         </div>
 
         {/* Product Grid */}
-        {/* Mobile: Horizontal scroll, Medium+: 2-column grid */}
-        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 md:overflow-x-visible">
-          <div className="flex md:grid md:grid-cols-2 gap-6 min-w-max md:min-w-0">
+        {/* Mobile/Medium: Horizontal scroll, Large: 4-column grid */}
+        <div className="overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:overflow-x-visible">
+          <div className="flex lg:grid lg:grid-cols-4 gap-6 min-w-max lg:min-w-0">
             {filteredProducts.map((product) => (
               <Card
                 key={product.id}
-                className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-full w-[320px] md:w-auto flex-shrink-0 md:flex-shrink"
+                className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-full w-[320px] lg:w-auto flex-shrink-0 lg:flex-shrink"
               >
                 <CardContent className="p-0 flex flex-col flex-1">
                   {/* Product Image */}
