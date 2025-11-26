@@ -21,7 +21,7 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 const app = express();
-const port = 5000;
+const port = 4000;
 
 // Initialize Supabase client
 const supabase = createClient(
