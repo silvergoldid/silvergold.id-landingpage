@@ -108,11 +108,7 @@ export default function RootLayout({
       areaServed: "ID",
       availableLanguage: ["Indonesian"],
     },
-    sameAs: [
-      // Add social media links when available
-      // "https://www.facebook.com/silvergold.id",
-      // "https://www.instagram.com/silvergold.id",
-    ],
+    sameAs: ["https://www.instagram.com/silvergold.id_/"],
     address: {
       "@type": "PostalAddress",
       addressCountry: "ID",
