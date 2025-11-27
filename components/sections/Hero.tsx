@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   CheckCircle,
   ShieldCheck,
@@ -69,17 +70,17 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">
               <Button
                 size="lg"
-                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-lg px-8"
+                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-base sm:text-lg lg:text-base xl:text-lg px-6 sm:px-8 lg:px-10 xl:px-8 whitespace-nowrap"
                 onClick={onWhatsAppClick}
               >
                 Pesan via WhatsApp
               </Button>
               <Button
                 size="lg"
-                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-lg px-8"
+                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-base sm:text-lg lg:text-base xl:text-lg px-6 sm:px-8 lg:px-10 xl:px-8 whitespace-nowrap"
                 onClick={() => scrollToSection("catalog")}
               >
                 Lihat Katalog Produk
@@ -110,9 +111,13 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Right Image */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-silver/20 rounded-2xl blur-3xl" />
-            <img
+            <Image
               src={heroImageSrc}
               alt="Luxury gold and silver bars"
+              width={1200}
+              height={675}
+              priority
+              fetchPriority="high"
               className="relative rounded-2xl shadow-2xl w-full h-auto object-cover"
             />
           </div>
