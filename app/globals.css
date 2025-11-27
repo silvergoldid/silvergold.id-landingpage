@@ -1,6 +1,5 @@
-/* 1. Import Font first */
-/* @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"); */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+/* Fonts are now loaded via Next.js font optimization in layout.tsx */
+/* This eliminates render-blocking from @import statements */
 @import "tailwindcss";
 
 @theme {
@@ -25,25 +24,17 @@
 
 @layer base {
   body {
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-inter), sans-serif;
     @apply bg-background text-foreground;
   }
 
-  /* h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: "Playfair Display", serif;
-  } */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: "Poppins", serif;
+    font-family: var(--font-poppins), sans-serif;
   }
 }
 
