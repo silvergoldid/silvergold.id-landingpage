@@ -14,7 +14,8 @@ export interface Product {
   price: string;
   description: string;
   condition: string;
-  sort_order: number;
+  sort_order?: number;
+  warehouse_stock?: Record<string, number> | null;
 }
 
 export interface CatalogProps {

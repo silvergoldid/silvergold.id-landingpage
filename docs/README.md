@@ -1,6 +1,6 @@
-# SilverGold.id Backend API
+# silvergold.id Backend API
 
-Express.js backend API for the SilverGold.id landing page, providing shipping cost calculation, location search, and product management features.
+Express.js backend API for the silvergold.id landing page, providing product management, warehouse inventory, shipping cost calculation, location search, and shipment tracking features.
 
 ## 🚀 Tech Stack
 
@@ -65,38 +65,57 @@ The server will start on `http://localhost:4000` (or the port specified in your 
 
 ## 📡 API Endpoints
 
-### 1. Health Check
+### 1. Root / Health Check
 
 **GET** `/`
 
-Test endpoint to verify the server is running.
+Returns API information and status.
 
 **Response:**
 
-```
-Hello, welcome to the backend using Express.js and Supabase!
+```json
+{
+  "message": "silvergold.id API",
+  "version": "1.0.0",
+  "status": "running"
+}
 ```
 
 ---
 
-### 2. Get Products
+### 2. Get All Products
 
 **GET** `/v1/products`
 
-Fetch all products from the Supabase database.
+Fetch all products from the Supabase database with selected fields.
 
 **Response:**
 
 ```json
 [
   {
-    "id": 1,
+    "id": "c93c7ca9-4172-45b5-999c-14024aa2fe06",
+    "metal": "Gold",
     "name": "Gold Bar 1g",
-    "price": 950000
-    // ... other product fields
+    "weight": "1 gram",
+    "purity": "99.99%",
+    "price": "Rp 950.000",
+    "description": "24K pure gold bar",
+    "condition": "Baru"
   }
 ]
 ```
+
+**Fields Returned:**
+
+- `id` - Product UUID
+- `metal` - Metal type (Gold/Silver)
+- `name` - Product name
+- `weight` - Product weight
+- `purity` - Metal purity
+- `price` - Product price
+- `description` - Product description
+- `condition` - Product condition
 
 **Error Response:**
 
@@ -108,11 +127,54 @@ Fetch all products from the Supabase database.
 
 ---
 
-### 3. Search Locations
+### 3. Get Warehouse Stock by Product ID
+
+**GET** `/v1/warehouse/:id`
+
+Fetch warehouse stock for a specific product by its ID.
+
+**Example:**
+
+```
+GET /v1/warehouse/c93c7ca9-4172-45b5-999c-14024aa2fe06
+```
+
+**Response:**
+
+```json
+{
+  "Gudang_Tangerang": 50,
+  "Gudang_Medan": 25
+}
+```
+
+Returns an object with warehouse locations as keys and stock quantities as values. Returns empty object `{}` if no warehouse data exists.
+
+**Error Responses:**
+
+404 Not Found:
+
+```json
+{
+  "error": "Product not found"
+}
+```
+
+500 Internal Server Error:
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+---
+
+### 4. Search Locations
 
 **POST** `/v1/list-location`
 
-Search for locations using autocomplete.
+Search for locations using autocomplete (Paxel API integration).
 
 **Request Body:**
 
@@ -130,7 +192,7 @@ Search for locations using autocomplete.
     {
       "description": "Jakarta, Indonesia",
       "place_id": "..."
-      // ... location details
+      // ... additional location details from Paxel API
     }
   ]
 }
@@ -150,26 +212,26 @@ Search for locations using autocomplete.
 
 ```json
 {
-  "error": "An error occurred while fetching the location data."
+  "error": "Failed to fetch location data"
 }
 ```
 
 ---
 
-### 4. Check Shipping Cost
+### 5. Check Shipping Cost
 
 **POST** `/v1/check-ongkir`
 
-Calculate shipping costs for a delivery.
+Calculate shipping costs for a delivery via Paxel.
 
 **Request Body:**
 
 ```json
 {
   "weight": "1",
-  "zipcode_pickup": "12345",
+  "zipcode_pickup": "12530",
   "destination": "Jakarta Selatan",
-  "zipcode_destination": "54321"
+  "zipcode_destination": "12160"
 }
 ```
 
@@ -180,7 +242,7 @@ Calculate shipping costs for a delivery.
   {
     "serviceName": "Same Day",
     "price": "Rp 25.000",
-    "link": "https://...",
+    "link": "https://paxel.co/...",
     "availability": "Available"
   },
   {
@@ -206,17 +268,17 @@ Calculate shipping costs for a delivery.
 
 ```json
 {
-  "error": "An error occurred while checking the shipping cost."
+  "error": "Failed to check shipping rates"
 }
 ```
 
 ---
 
-### 5. Track Shipment
+### 6. Track Shipment
 
 **POST** `/v1/check-resi`
 
-Track a shipment using its tracking code.
+Track a shipment using its tracking code via Paxel.
 
 **Request Body:**
 
@@ -230,7 +292,7 @@ Track a shipment using its tracking code.
 
 ```json
 {
-  // Tracking information from the external API
+  // Tracking information from Paxel API
 }
 ```
 
@@ -248,9 +310,11 @@ Track a shipment using its tracking code.
 
 ```json
 {
-  "error": "An error occurred while tracking the shipment."
+  "error": "Failed to track shipment"
 }
 ```
+
+---
 
 ## 🔒 CORS Configuration
 
@@ -259,10 +323,10 @@ The API is configured to accept requests from:
 - `https://silvergold-id-landingpage.vercel.app` (Production)
 - `http://localhost:3000` (Development)
 
-To add more allowed origins, update the `allowedOrigins` array in `index.js`:
+To add more allowed origins, update the `ALLOWED_ORIGINS` array in `index.js`:
 
 ```javascript
-const allowedOrigins = [
+const ALLOWED_ORIGINS = [
   "https://silvergold-id-landingpage.vercel.app",
   "http://localhost:3000",
   // Add more origins here
@@ -273,16 +337,47 @@ const allowedOrigins = [
 
 - **Connection Pooling**: Axios instances use HTTP/HTTPS agents with `keepAlive` enabled
 - **Request Timeout**: 10-second timeout on external API calls
-- **Max Sockets**: Up to 50 concurrent connections
+- **Max Sockets**: Up to 50 concurrent connections per protocol
+
+## 🏗️ Code Structure
+
+The backend code is organized into clear sections:
+
+```javascript
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+// Environment variables, constants, axios instance, Supabase client
+
+// ============================================================================
+// MIDDLEWARE SETUP
+// ============================================================================
+// CORS, Helmet, body parsers
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+// Utility functions like HTML parsing
+
+// ============================================================================
+// ROUTES
+// ============================================================================
+// All API endpoints
+
+// ============================================================================
+// START SERVER
+// ============================================================================
+// Server initialization
+```
 
 ## 🏗️ Project Structure
 
 ```
 backend/
-├── index.js          # Main application file
+├── index.js          # Main application file (refactored, organized)
 ├── package.json      # Dependencies and scripts
-├── .env             # Environment variables (not committed)
-└── README.md        # This file
+├── .env              # Environment variables (not committed)
+└── README.md         # This file
 ```
 
 ## 🛡️ Security
@@ -290,34 +385,41 @@ backend/
 - **Helmet.js**: Adds security headers to all responses
 - **CORS**: Restricts cross-origin requests to allowed domains only
 - **Environment Variables**: Sensitive tokens stored in `.env` file
+- **Input Validation**: All endpoints validate required parameters
 
 ## 🐛 Error Handling
 
 All endpoints include try-catch blocks and return appropriate HTTP status codes:
 
 - `200` - Success
-- `400` - Bad Request (missing parameters)
+- `400` - Bad Request (missing or invalid parameters)
+- `404` - Not Found (resource doesn't exist)
 - `500` - Internal Server Error
+
+Error responses are logged to console with descriptive messages for debugging.
 
 ## 📝 Notes
 
-- The shipping cost and tracking endpoints integrate with Paxel's API
-- HTML parsing is used to extract shipping information from the Paxel response
-- Credentials are enabled in CORS to support authenticated requests
+- The shipping cost and tracking endpoints integrate with **Paxel's API**
+- **HTML parsing** (Cheerio) is used to extract shipping information from Paxel responses
+- Product data is fetched from **Supabase** with specific field selection for efficiency
+- Warehouse stock is stored as JSONB in the `warehouse_stock` column
 
 ## 🤝 Contributing
 
 When adding new endpoints:
 
-1. Add appropriate error handling
+1. Add appropriate error handling with try-catch
 2. Validate all required parameters
 3. Use the shared `axiosInstance` for external API calls
-4. Document the endpoint in this README
+4. Return consistent error responses
+5. Log errors with descriptive context
+6. Document the endpoint in this README
 
 ## 📄 License
 
-Private project for SilverGold.id
+Private project for silvergold.id
 
 ---
 
-**Last Updated:** November 26, 2025
+**Last Updated:** November 28, 2025
