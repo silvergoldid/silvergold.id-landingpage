@@ -246,7 +246,7 @@ export const IndexPage = () => {
   const fetchItems = async () => {
     try {
       const response = await fetch(
-        `https://silvergold-id-landingpage.onrender.com/v1/products`
+        "https://silvergold-id-landingpage.onrender.com/v1/products"
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -258,6 +258,22 @@ export const IndexPage = () => {
     }
   };
 
+  // const testWarehouse = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost:4000/v1/warehouse/c93c7ca9-4172-45b5-999c-14024aa2fe06"
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+  //     const data = await response.json();
+  //     // console.log(data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Failed to fetch items:", error);
+  //   }
+  // };
+
   // const checkShippingRates = async () => {
   //   const payload = {
   //     weight: 1, // Hardcoded weight
@@ -267,7 +283,7 @@ export const IndexPage = () => {
   //   };
   //   try {
   //     // Make the API request
-  //     const response = await fetch("http://localhost:5000/v1/check-ongkir", {
+  //     const response = await fetch("http://localhost:4000/v1/check-ongkir", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -288,6 +304,7 @@ export const IndexPage = () => {
   useEffect(() => {
     fetchItems();
     // checkShippingRates();
+    // testWarehouse();
   }, []);
 
   return (

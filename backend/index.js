@@ -1,214 +1,234 @@
-require("dotenv").config(); // Load environment variables from .env file
-const cors = require("cors");
-const axios = require("axios");
-const helmet = require("helmet");
-const cheerio = require("cheerio");
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const axios = require("axios");
+const cheerio = require("cheerio");
 const http = require("http");
 const https = require("https");
-const { createClient } = require("@supabase/supabase-js"); // Supabase client
+const { createClient } = require("@supabase/supabase-js");
 
-// Create axios instance with connection pooling for better performance
-const axiosInstance = axios.create({
-  httpAgent: new http.Agent({ keepAlive: true, maxSockets: 50 }),
-  httpsAgent: new https.Agent({ keepAlive: true, maxSockets: 50 }),
-  timeout: 10000, // 10 seconds timeout
-});
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
 
-// Initialize the Express app
-const allowedOrigins = [
+const PORT = process.env.PORT || 4000;
+// const NODE_ENV = process.env.NODE_ENV || "development";
+
+const ALLOWED_ORIGINS = [
   "https://silvergold-id-landingpage.vercel.app",
   "http://localhost:3000",
 ];
-const app = express();
-const port = process.env.PORT || 4000;
 
-// Initialize Supabase client
+// Axios instance with connection pooling
+const axiosInstance = axios.create({
+  httpAgent: new http.Agent({ keepAlive: true, maxSockets: 50 }),
+  httpsAgent: new https.Agent({ keepAlive: true, maxSockets: 50 }),
+  timeout: 10000,
+});
+
+// Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
 
-// Middleware
+// ============================================================================
+// MIDDLEWARE SETUP
+// ============================================================================
+
+const app = express();
+
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
       return callback(new Error("CORS: Origin not allowed"));
     },
     credentials: true,
   })
 );
+
 app.use(helmet());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Function to extract data from the HTML response
-function extractDataFromHTML(html) {
-  const extractedData = [];
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
 
-  // Load the HTML into Cheerio for parsing
+/**
+ * Extract shipping service data from Paxel HTML response
+ */
+function extractShippingServicesFromHTML(html) {
+  const services = [];
   const $ = cheerio.load(html);
-
-  // Target the section with the id 'check-rates-result'
   const section = $("#check-rates-result");
 
-  // Iterate through each 'li' element in the 'ul' inside the section
   section.find("ul li.service").each((i, el) => {
     const serviceName = $(el).find(".service-name").text().trim();
     const link = $(el).find(".send-now a").attr("href");
+    const notAvailable = $(el).find(".service-not-available").length > 0;
 
-    // Check if service is not available
-    const notAvailableDiv = $(el).find(".service-not-available");
-    const isNotAvailable = notAvailableDiv.length > 0;
-
-    let price = null;
-    let availability = "Available";
-
-    if (isNotAvailable) {
-      // Service is not available
-      price = null;
-      availability = "Tidak tersedia";
-    } else {
-      // Service is available, get the price
-      price = $(el).find(".price").text().trim();
-      availability = "Available";
-    }
-
-    // Add each service with its availability status
-    extractedData.push({
+    services.push({
       serviceName,
-      price,
+      price: notAvailable ? null : $(el).find(".price").text().trim(),
       link: link || null,
-      availability,
+      availability: notAvailable ? "Tidak tersedia" : "Available",
     });
   });
 
-  return extractedData;
+  return services;
 }
 
-// Test route
+// ============================================================================
+// ROUTES
+// ============================================================================
+
+// Root endpoint
 app.get("/", (req, res) => {
-  res.send("Hello, welcome to the backend using Express.js and Supabase!");
+  res.json({
+    message: "silvergold.id API",
+    version: "1.0.0",
+    status: "running",
+  });
 });
 
-// Example route to fetch data from Supabase
+// Get all products
 app.get("/v1/products", async (req, res) => {
-  const { data, error } = await supabase
-    .from("products") // Replace with your actual table name
-    .select("*");
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, metal, name, weight, purity, price, description, condition");
 
-  if (error) {
-    res.status(500).json({ error: error.message });
-  } else {
+    if (error) throw error;
+
     res.json(data);
+  } catch (error) {
+    console.error("Products error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.post("/v1/list-location", async (req, res) => {
-  const { searchstr } = req.body; // Get search term from the request
-
-  if (!searchstr) {
-    return res.status(400).json({ error: "Missing searchstr parameter" });
-  }
-
+// example: GET /v1/warehouse/c93c7ca9-4172-45b5-999c-14024aa2fe06
+app.get("/v1/warehouse/:id", async (req, res) => {
   try {
-    // Call the external API (similar to the one shown in the image)
+    const { id } = req.params;
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("warehouse_stock")
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    res.json(data.warehouse_stock || {});
+  } catch (error) {
+    console.error("Warehouse error:", error);
+    if (error.code === "PGRST116") {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Location autocomplete
+app.post("/v1/list-location", async (req, res) => {
+  try {
+    const { searchstr } = req.body;
+
+    if (!searchstr) {
+      return res.status(400).json({ error: "Missing searchstr parameter" });
+    }
+
     const response = await axiosInstance.post(
       "https://paxel.co/api/v1/internal-autocomplete",
       {
-        searchstr: searchstr,
-        session_token: process.env.LIST_LOCATION_TOKEN, // Hardcoded session token
-        use_db_only: "0", // Hardcoded
+        searchstr,
+        session_token: process.env.LIST_LOCATION_TOKEN,
+        use_db_only: "0",
       }
     );
-    // Send the response back to the client
-    res.status(200).json(response.data);
+
+    res.json(response.data);
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching the location data." });
+    console.error("Location autocomplete error:", error);
+    res.status(500).json({ error: "Failed to fetch location data" });
   }
 });
 
+// Check shipping rates
 app.post("/v1/check-ongkir", async (req, res) => {
-  const { weight, zipcode_pickup, destination, zipcode_destination } = req.body;
-
-  // Ensure all required parameters are provided
-  if (!weight || !zipcode_pickup || !destination || !zipcode_destination) {
-    return res.status(400).json({ error: "Missing required parameters" });
-  }
-
   try {
-    // Prepare form data (like Postman's form-data)
-    const formData = new URLSearchParams();
-    formData.append("_token", process.env.CHECK_ONGKIR_TOKEN);
-    formData.append("weight", weight);
-    formData.append("validation_value", "pass");
-    formData.append("pickup", "rens garage");
-    formData.append("zipcode_pickup", zipcode_pickup);
-    formData.append("destination", destination);
-    formData.append("zipcode_destination", zipcode_destination);
-    formData.append("destination_counter", "0");
-    formData.append("button", "");
+    const { weight, zipcode_pickup, destination, zipcode_destination } =
+      req.body;
 
-    // Call the external API with form data using connection pooling
+    if (!weight || !zipcode_pickup || !destination || !zipcode_destination) {
+      return res.status(400).json({ error: "Missing required parameters" });
+    }
+
+    const formData = new URLSearchParams({
+      _token: process.env.CHECK_ONGKIR_TOKEN,
+      weight,
+      validation_value: "pass",
+      pickup: "rens garage",
+      zipcode_pickup,
+      destination,
+      zipcode_destination,
+      destination_counter: "0",
+      button: "",
+    });
+
     const response = await axiosInstance.post(
       "https://paxel.co/id/check-rates",
       formData,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
 
-    const extractedData = extractDataFromHTML(response.data);
-
-    // Send the extracted data back to the client
-    res.status(200).json(extractedData);
+    const services = extractShippingServicesFromHTML(response.data);
+    res.json(services);
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while checking the shipping cost." });
+    console.error("Check rates error:", error);
+    res.status(500).json({ error: "Failed to check shipping rates" });
   }
 });
 
+// Track shipment
 app.post("/v1/check-resi", async (req, res) => {
-  const { shipment_code } = req.body;
-
-  // Ensure the shipment_code is provided
-  if (!shipment_code) {
-    return res.status(400).json({ error: "Missing shipment_code parameter" });
-  }
-
   try {
-    // Call the external API to track the shipment using connection pooling
+    const { shipment_code } = req.body;
+
+    if (!shipment_code) {
+      return res.status(400).json({ error: "Missing shipment_code parameter" });
+    }
+
     const response = await axiosInstance.post(
       "https://paxel.co/en/track-shipments",
       null,
       {
         params: {
-          _token: process.env.CHECK_RESI_TOKEN, // Hardcoded token
-          shipment_code: shipment_code, // Get shipment_code from the request
-          button: "", // Hardcoded button field (if needed for the API)
+          _token: process.env.CHECK_RESI_TOKEN,
+          shipment_code,
+          button: "",
         },
       }
     );
 
-    // Send the response back to the client with the data from the external API
-    res.status(200).json(response.data);
+    res.json(response.data);
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while tracking the shipment." });
+    console.error("Track shipment error:", error);
+    res.status(500).json({ error: "Failed to track shipment" });
   }
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+// ============================================================================
+// START SERVER
+// ============================================================================
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  // console.log(`📦 Environment: ${NODE_ENV}`);
 });
