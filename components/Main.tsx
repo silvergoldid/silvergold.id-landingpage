@@ -254,12 +254,12 @@ export const IndexPage = () => {
   const fetchData = async () => {
     try {
       const [productsRes, pricesRes] = await Promise.all([
-        // fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
-        // fetch(
-        //   "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
-        // ),
-        fetch("http://localhost:4000/v1/product"),
-        fetch("http://localhost:4000/v1/market-prices"),
+        fetch("https://silvergold-id-landingpage.onrender.com/v1/product"),
+        fetch(
+          "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
+        ),
+        // fetch("http://localhost:4000/v1/product"),
+        // fetch("http://localhost:4000/v1/market-prices"),
       ]);
       if (!productsRes.ok || !pricesRes.ok) {
         throw new Error(
