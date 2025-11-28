@@ -452,11 +452,7 @@ Fetch all knowledge base articles from the Supabase database.
 [
   {
     "id": "...",
-    "title": "Cara Investasi Emas untuk Pemula",
-    "content": "...",
-    "category": "Investment Guide",
-    "created_at": "2023-11-28T07:00:00.000Z",
-    "updated_at": "2023-11-28T07:00:00.000Z"
+    "description": "............."
   }
 ]
 ```
