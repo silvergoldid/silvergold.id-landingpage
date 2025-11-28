@@ -4,6 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export interface Product {
   id: string;
@@ -193,40 +194,55 @@ export const Catalog: React.FC<CatalogProps> = ({
         </div>
 
         {/* Filter Buttons */}
-        <div className="grid grid-cols-3 sm:flex sm:flex-row justify-center gap-3 sm:gap-4 mb-12 max-w-2xl mx-auto">
-          <Button
-            variant={filter === "Semua" ? "default" : "outline"}
-            className={`${
-              filter === "Semua"
-                ? "bg-gold hover:bg-gold-dark text-primary-foreground"
-                : "border-border hover:border-gold"
-            }`}
-            onClick={() => setFilter("Semua")}
-          >
-            Semua
-          </Button>
-          <Button
-            variant={filter === "Emas" ? "default" : "outline"}
-            className={`${
-              filter === "Emas"
-                ? "bg-gold hover:bg-gold-dark text-primary-foreground"
-                : "border-border hover:border-gold"
-            }`}
-            onClick={() => setFilter("Emas")}
-          >
-            Emas
-          </Button>
-          <Button
-            variant={filter === "Perak" ? "default" : "outline"}
-            className={`${
-              filter === "Perak"
-                ? "bg-silver hover:bg-silver-dark text-primary-foreground"
-                : "border-border hover:border-silver"
-            }`}
-            onClick={() => setFilter("Perak")}
-          >
-            Perak
-          </Button>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
+          {/* Left - Filter Buttons */}
+          <div className="grid grid-cols-3 sm:flex sm:flex-row gap-3 sm:gap-4">
+            <Button
+              variant={filter === "Semua" ? "default" : "outline"}
+              className={`${
+                filter === "Semua"
+                  ? "bg-gold hover:bg-gold-dark text-primary-foreground"
+                  : "border-border hover:border-gold"
+              }`}
+              onClick={() => setFilter("Semua")}
+            >
+              Semua
+            </Button>
+            <Button
+              variant={filter === "Emas" ? "default" : "outline"}
+              className={`${
+                filter === "Emas"
+                  ? "bg-gold hover:bg-gold-dark text-primary-foreground"
+                  : "border-border hover:border-gold"
+              }`}
+              onClick={() => setFilter("Emas")}
+            >
+              Emas
+            </Button>
+            <Button
+              variant={filter === "Perak" ? "default" : "outline"}
+              className={`${
+                filter === "Perak"
+                  ? "bg-silver hover:bg-silver-dark text-primary-foreground"
+                  : "border-border hover:border-silver"
+              }`}
+              onClick={() => setFilter("Perak")}
+            >
+              Perak
+            </Button>
+          </div>
+
+          {/* Right - View Full Catalog Button */}
+          <div className="flex items-end w-full sm:w-auto">
+            <Link href="/catalogue" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="border-border hover:border-gold w-full"
+              >
+                Lihat Katalog Selengkapnya
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Product Grid */}

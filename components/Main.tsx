@@ -45,7 +45,7 @@ export { Navigation, Hero, PriceBar, Catalog, Benefits, HowToBuy, FAQ, Footer };
 // ============================================================================
 
 const heroImageSrc =
-  "https://silvergold.lovable.app/assets/hero-precious-metals-CLcrZG1n.jpg";
+  "https://images.pexels.com/photos/34962375/pexels-photo-34962375.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 const goldBarImageSrc =
   "https://silvergold.lovable.app/assets/gold-bar-D2ySwO4d.jpg";
 const silverBarImageSrc =
@@ -254,10 +254,12 @@ export const IndexPage = () => {
   const fetchData = async () => {
     try {
       const [productsRes, pricesRes] = await Promise.all([
-        fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
-        fetch(
-          "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
-        ),
+        // fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
+        // fetch(
+        //   "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
+        // ),
+        fetch("http://localhost:4000/v1/product"),
+        fetch("http://localhost:4000/v1/market-prices"),
       ]);
       if (!productsRes.ok || !pricesRes.ok) {
         throw new Error(
