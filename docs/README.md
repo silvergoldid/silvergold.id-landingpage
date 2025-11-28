@@ -40,6 +40,7 @@ SUPABASE_KEY=your_supabase_anon_key
 LIST_LOCATION_TOKEN=your_location_api_token
 CHECK_ONGKIR_TOKEN=your_shipping_api_token
 CHECK_RESI_TOKEN=your_tracking_api_token
+MARKET_PRICE_ID=your_market_price_row_id
 ```
 
 ## 🔐 Environment Variables
@@ -52,6 +53,7 @@ CHECK_RESI_TOKEN=your_tracking_api_token
 | `LIST_LOCATION_TOKEN` | Session token for location autocomplete API | Yes      |
 | `CHECK_ONGKIR_TOKEN`  | Token for shipping cost calculation API     | Yes      |
 | `CHECK_RESI_TOKEN`    | Token for shipment tracking API             | Yes      |
+| `MARKET_PRICE_ID`     | ID of the row in `market_prices` table      | Yes      |
 
 ## 🏃 Running the Server
 
@@ -311,6 +313,83 @@ Track a shipment using its tracking code via Paxel.
 ```json
 {
   "error": "Failed to track shipment"
+}
+```
+
+---
+
+### 7. Get Market Prices
+
+**GET** `/v1/market-prices`
+
+Fetch current market prices for gold and silver.
+
+**Response:**
+
+```json
+{
+  "gold_price": 2360000,
+  "silver_price": 32000,
+  "last_updated": "2023-11-28T07:00:00.000Z"
+}
+```
+
+**Error Responses:**
+
+500 Internal Server Error:
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+---
+
+### 8. Update Market Prices
+
+**PUT** `/v1/market-prices`
+
+Update market prices for gold and silver.
+
+**Request Body:**
+
+```json
+{
+  "gold": 2360000,
+  "silver": 32000
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Prices updated successfully",
+  "data": {
+    "id": "...",
+    "gold_price": 2360000,
+    "silver_price": 32000,
+    "last_updated": "..."
+  }
+}
+```
+
+**Error Responses:**
+
+400 Bad Request:
+
+```json
+{
+  "error": "Gold and Silver prices are required"
+}
+```
+
+500 Internal Server Error:
+
+```json
+{
+  "error": "Error message"
 }
 ```
 

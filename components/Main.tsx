@@ -254,8 +254,10 @@ export const IndexPage = () => {
   const fetchData = async () => {
     try {
       const [productsRes, pricesRes] = await Promise.all([
-        fetch("http://localhost:4000/v1/products"),
-        fetch("http://localhost:4000/v1/market-prices"),
+        fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
+        fetch(
+          "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
+        ),
       ]);
       if (!productsRes.ok || !pricesRes.ok) {
         throw new Error(
