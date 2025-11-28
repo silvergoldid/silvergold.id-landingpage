@@ -209,7 +209,10 @@ export default function CataloguePage() {
                     ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                     : "border-border hover:border-gold"
                 }`}
-                onClick={() => setFilter("Semua")}
+                onClick={() => {
+                  setFilter("Semua");
+                  setWeightFilter(null);
+                }}
               >
                 Semua
               </Button>
@@ -257,7 +260,7 @@ export default function CataloguePage() {
             )}
 
             {/* Weight Filter Options (Collapsible) */}
-            {showWeightFilters && (
+            {filter !== "Semua" && showWeightFilters && (
               <div className="flex flex-wrap justify-center gap-2 px-4 animate-in fade-in slide-in-from-top-2">
                 <Button
                   variant={weightFilter === null ? "default" : "outline"}
