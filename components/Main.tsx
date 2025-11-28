@@ -254,7 +254,7 @@ export const IndexPage = () => {
   const fetchData = async () => {
     try {
       const [productsRes, pricesRes] = await Promise.all([
-        fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
+        fetch("https://silvergold-id-landingpage.onrender.com/v1/product"),
         fetch(
           "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
         ),
