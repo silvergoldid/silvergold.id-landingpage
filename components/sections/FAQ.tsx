@@ -57,27 +57,27 @@ export const FAQ: React.FC = () => {
     <section id="faq" className="py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8 max-w-4xl">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Pertanyaan yang Sering{" "}
             <span className="text-gradient-gold">Ditanyakan</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground">
             Semua yang perlu Anda ketahui tentang membeli logam mulia dengan
             silvergold.id
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="space-y-4">
+        <Accordion type="single" collapsible className="space-y-0">
           {faqsData.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-card border border-border rounded-lg px-6 data-[state=open]:border-gold/50 transition-all duration-300"
+              className="border-0 border-b border-border/30 last:border-b-0 py-4 hover:border-gold/30 transition-colors duration-300"
             >
-              <AccordionTrigger className="text-left font-semibold hover:text-gold transition-colors">
+              <AccordionTrigger className="text-left font-semibold hover:text-gold transition-colors duration-300 text-base md:text-lg py-2 [&[data-state=open]]:text-gold cursor-pointer">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pt-2 pb-0 cursor-pointer">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

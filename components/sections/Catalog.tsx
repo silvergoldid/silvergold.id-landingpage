@@ -18,6 +18,11 @@ export interface Product {
   warehouse_stock?: Record<string, number> | null;
 }
 
+export interface MarketPrice {
+  gold_price: string;
+  silver_price: string;
+}
+
 export interface CatalogProps {
   products: Product[];
   onWhatsAppClick: () => void;
@@ -65,14 +70,14 @@ const ProductCard: React.FC<{
 
         {/* Product Info */}
         <div className="p-5 space-y-3 flex flex-col flex-1">
-          <h3 className="text-xl font-semibold">{product.name}</h3>
+          <h3 className="text-lg md:text-xl font-semibold">{product.name}</h3>
 
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-sm md:text-base">
             <span className="text-muted-foreground">{product.weight}</span>
             <span className="text-gold font-semibold">{product.purity}</span>
           </div>
 
-          <div className="text-sm">
+          <div className="text-sm md:text-base">
             <span className="text-muted-foreground">Kondisi: </span>
             <span className="text-foreground font-medium">
               {product.condition}
@@ -84,17 +89,19 @@ const ProductCard: React.FC<{
           </p>
 
           <div className="pt-3 border-t border-border mt-auto">
-            <p className="text-2xl font-bold text-gold mb-1">{product.price}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xl md:text-2xl font-bold text-gold mb-1">
+              {product.price}
+            </p>
+            <p className="text-xs md:text-sm text-muted-foreground">
               *Harga indikatif, final dikonfirmasi via WhatsApp.
             </p>
           </div>
 
           <Button
-            className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300 lg:text-xs lg:px-3 lg:py-2 xl:text-sm xl:px-4 xl:py-3 whitespace-nowrap"
+            className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300 text-sm md:text-base whitespace-nowrap"
             onClick={onWhatsAppClick}
           >
-            <MessageCircle className="mr-2 h-4 w-4 lg:h-3 lg:w-3 xl:h-4 xl:w-4" />
+            <MessageCircle className="mr-2 h-4 w-4" />
             Pesan via WhatsApp
           </Button>
         </div>
@@ -146,6 +153,7 @@ export const Catalog: React.FC<CatalogProps> = ({
   });
 
   // Generate Product schema for first few products (to avoid excessive data)
+  // Generate Product schema for first few products (to avoid excessive data)
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -175,20 +183,20 @@ export const Catalog: React.FC<CatalogProps> = ({
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Katalog Logam <span className="text-gradient-gold">Mulia</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Temukan pilihan emas dan perak dari berbagai brand resmi, tersedia
             dalam beragam ukuran — mulai dari 1 gram hingga 100 gram.
           </p>
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-12 max-w-2xl mx-auto">
+        <div className="grid grid-cols-3 sm:flex sm:flex-row justify-center gap-3 sm:gap-4 mb-12 max-w-2xl mx-auto">
           <Button
             variant={filter === "Semua" ? "default" : "outline"}
-            className={`w-full sm:w-auto ${
+            className={`${
               filter === "Semua"
                 ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                 : "border-border hover:border-gold"
@@ -199,25 +207,25 @@ export const Catalog: React.FC<CatalogProps> = ({
           </Button>
           <Button
             variant={filter === "Emas" ? "default" : "outline"}
-            className={`w-full sm:w-auto ${
+            className={`${
               filter === "Emas"
                 ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                 : "border-border hover:border-gold"
             }`}
             onClick={() => setFilter("Emas")}
           >
-            Batangan Emas
+            Emas
           </Button>
           <Button
             variant={filter === "Perak" ? "default" : "outline"}
-            className={`w-full sm:w-auto ${
+            className={`${
               filter === "Perak"
                 ? "bg-silver hover:bg-silver-dark text-primary-foreground"
                 : "border-border hover:border-silver"
             }`}
             onClick={() => setFilter("Perak")}
           >
-            Batangan Perak
+            Perak
           </Button>
         </div>
 
@@ -243,6 +251,12 @@ export const Catalog: React.FC<CatalogProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Product Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
     </section>
   );
 };

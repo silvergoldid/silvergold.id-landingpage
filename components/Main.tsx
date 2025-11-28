@@ -10,7 +10,11 @@ import React, { useEffect, useState } from "react";
 import { Navigation } from "@/components/sections/Navigation";
 import { Hero } from "@/components/sections/Hero";
 import { PriceBar } from "@/components/sections/PriceBar";
-import { Catalog, type Product } from "@/components/sections/Catalog";
+import {
+  Catalog,
+  type Product,
+  type MarketPrice,
+} from "@/components/sections/Catalog";
 import { Benefits } from "@/components/sections/Benefits";
 import { HowToBuy } from "@/components/sections/HowToBuy";
 import { FAQ } from "@/components/sections/FAQ";
@@ -18,7 +22,7 @@ import { Footer } from "@/components/sections/Footer";
 import { handleContactUs } from "@/lib/utils";
 
 // Re-export types
-export type { Product };
+// export type { Product, MarketPrice };
 
 // Export UI components for backward compatibility
 export { Button } from "@/components/ui/button";
@@ -242,17 +246,26 @@ const whatsappUrl = "https://wa.me/6285110328180";
 
 export const IndexPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [marketPrice, setMarketPrice] = useState<MarketPrice>({
+    gold_price: "",
+    silver_price: "",
+  });
 
-  const fetchItems = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch(
-        "https://silvergold-id-landingpage.onrender.com/v1/products"
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const [productsRes, pricesRes] = await Promise.all([
+        fetch("http://localhost:4000/v1/products"),
+        fetch("http://localhost:4000/v1/market-prices"),
+      ]);
+      if (!productsRes.ok || !pricesRes.ok) {
+        throw new Error(
+          `HTTP error! status: ${productsRes.status} or ${pricesRes.status}`
+        );
       }
-      const data = await response.json();
-      setProducts(data);
+      const productsData = await productsRes.json();
+      const pricesData = await pricesRes.json();
+      setProducts(productsData);
+      setMarketPrice(pricesData);
     } catch (error) {
       console.error("Failed to fetch items:", error);
     }
@@ -302,7 +315,7 @@ export const IndexPage = () => {
   // };
 
   useEffect(() => {
-    fetchItems();
+    fetchData();
     // checkShippingRates();
     // testWarehouse();
   }, []);
@@ -311,7 +324,7 @@ export const IndexPage = () => {
     <div className="min-h-screen bg-background">
       <Navigation onWhatsAppClick={handleContactUs} logoSrc={logoSrc} />
       <Hero onWhatsAppClick={handleContactUs} heroImageSrc={heroImageSrc} />
-      <PriceBar />
+      <PriceBar marketPrice={marketPrice} />
       <Catalog
         products={products}
         onWhatsAppClick={handleContactUs}
