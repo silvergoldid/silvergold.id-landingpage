@@ -44,7 +44,11 @@ export const Navigation: React.FC<NavigationProps> = ({
             onClick={() => scrollToSection("home")}
             className="hover:opacity-80 transition-opacity"
           >
-            <img src={logoSrc} alt="silvergold.id" className="h-25 w-auto" />
+            <img
+              src={logoSrc}
+              alt="silvergold.id"
+              className="h-14 md:h-16 w-auto"
+            />
           </button>
 
           {/* Desktop Menu */}
@@ -82,14 +86,15 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex items-center gap-2 ml-4">
+          <div className="flex items-center gap-2 ml-auto md:ml-4">
             <Button
               variant="outline"
-              className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300 text-sm md:text-base"
+              size="sm"
+              className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300 text-xs md:text-base md:px-4 px-2 h-9 md:h-10"
               onClick={onWhatsAppClick}
             >
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Konsultasi
+              <MessageCircle className="md:mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Konsultasi</span>
             </Button>
 
             {/* Mobile Menu Toggle */}

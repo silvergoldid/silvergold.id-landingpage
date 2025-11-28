@@ -36,15 +36,16 @@ export const Hero: React.FC<HeroProps> = ({
           alt="Gold and silver investment background"
           fill
           priority
+          quality={75}
           className="object-cover"
           sizes="100vw"
         />
         {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 py-16 relative z-10">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-10">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 md:mb-10">
           Mulai Investasi <span className="text-gradient-gold">Emas</span> &{" "}
           <span className="text-gradient-silver">Perak</span>
           <br />
@@ -56,25 +57,25 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                <span className="text-base md:text-lg text-foreground">
+                <span className="text-sm md:text-lg text-foreground">
                   Cocok untuk Tabungan Jangka Panjang
                 </span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                <span className="text-base md:text-lg text-foreground">
+                <span className="text-sm md:text-lg text-foreground">
                   Nilai Stabil & Tahan Inflasi
                 </span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                <span className="text-base md:text-lg text-foreground">
+                <span className="text-sm md:text-lg text-foreground">
                   Pembelian Mudah, Mulai dari 1 Gram
                 </span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
-                <span className="text-base md:text-lg text-foreground">
+                <span className="text-sm md:text-lg text-foreground">
                   Produk Resmi, Terverifikasi, & Siap Disimpan
                 </span>
               </div>
@@ -84,14 +85,14 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">
               <Button
                 size="lg"
-                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-base md:text-lg whitespace-nowrap"
+                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-sm md:text-lg whitespace-nowrap"
                 onClick={onWhatsAppClick}
               >
                 Pesan via WhatsApp
               </Button>
               <Button
                 size="lg"
-                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-base md:text-lg whitespace-nowrap"
+                className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-sm md:text-lg whitespace-nowrap"
                 onClick={() => scrollToSection("catalog")}
               >
                 Lihat Katalog Produk

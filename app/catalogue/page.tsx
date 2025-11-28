@@ -8,6 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// export const metadata = {
+//   title: "Katalog Lengkap Emas & Perak | silvergold.id",
+//   description:
+//     "Jelajahi koleksi lengkap emas dan perak dari silvergold.id. Batangan emas 99.99% dan perak 99.9% dari 1 gram hingga 1 kg dengan harga real-time dan pengiriman aman.",
+// };
+
 const goldBarImageSrc =
   "https://silvergold.lovable.app/assets/gold-bar-D2ySwO4d.jpg";
 const silverBarImageSrc =
@@ -30,7 +36,14 @@ const ProductCard: React.FC<{
   goldBarImageSrc: string;
   silverBarImageSrc: string;
   onWhatsAppClick: () => void;
-}> = ({ product, goldBarImageSrc, silverBarImageSrc, onWhatsAppClick }) => {
+  index: number;
+}> = ({
+  product,
+  goldBarImageSrc,
+  silverBarImageSrc,
+  onWhatsAppClick,
+  index,
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -45,6 +58,9 @@ const ProductCard: React.FC<{
             src={product.metal === "Gold" ? goldBarImageSrc : silverBarImageSrc}
             alt={product.name}
             fill
+            priority={index < 6}
+            loading={index < 6 ? undefined : "lazy"}
+            quality={80}
             className={`object-cover group-hover:scale-105 transition-transform duration-300 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
@@ -70,7 +86,7 @@ const ProductCard: React.FC<{
               </span>
             </div>
 
-            <h3 className="text-lg md:text-xl font-semibold mb-2">
+            <h3 className="text-base md:text-xl font-semibold mb-2">
               {product.name}
             </h3>
 
@@ -89,7 +105,7 @@ const ProductCard: React.FC<{
           </div>
 
           <div className="mt-auto">
-            <p className="text-2xl md:text-3xl font-bold text-gold mb-4">
+            <p className="text-xl md:text-3xl font-bold text-gold mb-4">
               {product.price}
             </p>
 
@@ -182,12 +198,13 @@ export default function CataloguePage() {
       <section className="py-20">
         <div className="container mx-auto px-4 lg:px-8">
           {/* Filter Buttons */}
-          <div className="flex flex-col items-center gap-4 mb-12">
+          <div className="flex flex-col items-center gap-3 mb-10">
             {/* Metal Type Filter */}
-            <div className="flex justify-center gap-3 sm:gap-4">
+            <div className="flex justify-center gap-2 sm:gap-4">
               <Button
                 variant={filter === "Semua" ? "default" : "outline"}
-                className={`${
+                size="sm"
+                className={`text-xs sm:text-sm ${
                   filter === "Semua"
                     ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                     : "border-border hover:border-gold"
@@ -198,7 +215,8 @@ export default function CataloguePage() {
               </Button>
               <Button
                 variant={filter === "Emas" ? "default" : "outline"}
-                className={`${
+                size="sm"
+                className={`text-xs sm:text-sm ${
                   filter === "Emas"
                     ? "bg-gold hover:bg-gold-dark text-primary-foreground"
                     : "border-border hover:border-gold"
@@ -209,7 +227,8 @@ export default function CataloguePage() {
               </Button>
               <Button
                 variant={filter === "Perak" ? "default" : "outline"}
-                className={`${
+                size="sm"
+                className={`text-xs sm:text-sm ${
                   filter === "Perak"
                     ? "bg-silver hover:bg-silver-dark text-primary-foreground"
                     : "border-border hover:border-silver"
@@ -221,18 +240,21 @@ export default function CataloguePage() {
             </div>
 
             {/* Weight Filter Toggle */}
-            <Button
-              variant="ghost"
-              className="text-gold hover:text-gold-dark hover:bg-gold/10"
-              onClick={() => setShowWeightFilters(!showWeightFilters)}
-            >
-              Filter Berdasarkan Berat
-              <ChevronDown
-                className={`ml-2 h-4 w-4 transition-transform duration-200 ${
-                  showWeightFilters ? "rotate-180" : ""
-                }`}
-              />
-            </Button>
+            {filter !== "Semua" && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gold hover:text-gold-dark hover:bg-gold/10 text-xs sm:text-sm"
+                onClick={() => setShowWeightFilters(!showWeightFilters)}
+              >
+                Filter Berdasarkan Berat
+                <ChevronDown
+                  className={`ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-200 ${
+                    showWeightFilters ? "rotate-180" : ""
+                  }`}
+                />
+              </Button>
+            )}
 
             {/* Weight Filter Options (Collapsible) */}
             {showWeightFilters && (
@@ -287,13 +309,14 @@ export default function CataloguePage() {
                     </div>
                   </Card>
                 ))
-              : filteredProducts.map((product) => (
+              : filteredProducts.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     goldBarImageSrc={goldBarImageSrc}
                     silverBarImageSrc={silverBarImageSrc}
                     onWhatsAppClick={handleWhatsAppClick}
+                    index={index}
                   />
                 ))}
           </div>

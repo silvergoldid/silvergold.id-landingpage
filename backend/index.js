@@ -302,6 +302,20 @@ app.put("/v1/market-prices", async (req, res) => {
   }
 });
 
+// Get knowledge base articles
+app.get("/v1/knowledge", async (req, res) => {
+  try {
+    const { data, error } = await supabase.from("knowledge").select("*");
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (error) {
+    console.error("Knowledge error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ============================================================================
 // START SERVER
 // ============================================================================

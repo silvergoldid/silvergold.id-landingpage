@@ -37,11 +37,18 @@ const ProductCard: React.FC<{
   goldBarImageSrc: string;
   silverBarImageSrc: string;
   onWhatsAppClick: () => void;
-}> = ({ product, goldBarImageSrc, silverBarImageSrc, onWhatsAppClick }) => {
+  index: number;
+}> = ({
+  product,
+  goldBarImageSrc,
+  silverBarImageSrc,
+  onWhatsAppClick,
+  index,
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <Card className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col h-[560px] w-[320px] lg:h-auto lg:w-auto flex-shrink-0 lg:flex-shrink">
+    <Card className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col w-[85vw] sm:w-[320px] lg:w-auto flex-shrink-0 lg:flex-shrink-0 h-auto self-stretch">
       <CardContent className="p-0 flex flex-col flex-1">
         {/* Product Image */}
         <div className="relative overflow-hidden bg-charcoal-light h-48">
@@ -53,6 +60,9 @@ const ProductCard: React.FC<{
             alt={product.name}
             width={320}
             height={192}
+            priority={index < 3}
+            loading={index < 3 ? undefined : "lazy"}
+            quality={80}
             onLoad={() => setImageLoaded(true)}
             className={`w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 ${
               imageLoaded ? "opacity-100" : "opacity-0"
@@ -113,7 +123,7 @@ const ProductCard: React.FC<{
 
 // Product Card Skeleton
 const ProductCardSkeleton: React.FC = () => (
-  <Card className="bg-card border-border overflow-hidden flex flex-col h-[560px] w-[320px] lg:h-auto lg:w-auto flex-shrink-0 lg:flex-shrink">
+  <Card className="bg-card border-border overflow-hidden flex flex-col w-[85vw] sm:w-[320px] lg:w-auto flex-shrink-0 lg:flex-shrink-0 h-auto self-stretch">
     <CardContent className="p-0 flex flex-col flex-1">
       <Skeleton className="w-full h-48" />
       <div className="p-5 space-y-3 flex flex-col flex-1">
@@ -194,7 +204,7 @@ export const Catalog: React.FC<CatalogProps> = ({
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-5">
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-5">
           {/* Left - Filter Buttons */}
           <div className="grid grid-cols-3 sm:flex sm:flex-row gap-3 sm:gap-4">
             <Button
@@ -255,13 +265,14 @@ export const Catalog: React.FC<CatalogProps> = ({
                   <ProductCardSkeleton key={`skeleton-${index}`} />
                 ))
               : // Show actual products
-                filteredProducts.map((product) => (
+                filteredProducts.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     goldBarImageSrc={goldBarImageSrc}
                     silverBarImageSrc={silverBarImageSrc}
                     onWhatsAppClick={onWhatsAppClick}
+                    index={index}
                   />
                 ))}
           </div>

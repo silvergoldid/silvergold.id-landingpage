@@ -4,6 +4,8 @@
  * Refactored into modular components for better maintainability
  */
 
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 // Import section components

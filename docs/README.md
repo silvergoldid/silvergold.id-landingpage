@@ -85,7 +85,52 @@ Returns API information and status.
 
 ---
 
-### 2. Get All Products
+### 2. Get Featured Products
+
+**GET** `/v1/product`
+
+Fetch a curated selection of products (2 gold and 2 silver items) for display on the landing page.
+
+**Response:**
+
+```json
+[
+  {
+    "id": "c93c7ca9-4172-45b5-999c-14024aa2fe06",
+    "metal": "Gold",
+    "name": "Gold Bar 1g",
+    "weight": "1 gram",
+    "purity": "99.99%",
+    "price": "Rp 950.000",
+    "description": "24K pure gold bar",
+    "condition": "Baru"
+  },
+  {
+    "id": "...",
+    "metal": "Silver",
+    "name": "Silver Bar 1g",
+    "weight": "1 gram",
+    "purity": "99.9%",
+    "price": "Rp 32.000",
+    "description": "Fine silver bar",
+    "condition": "Baru"
+  }
+]
+```
+
+**Note:** Returns exactly 2 gold products and 2 silver products (4 total).
+
+**Error Response:**
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+---
+
+### 3. Get All Products
 
 **GET** `/v1/products`
 
@@ -129,7 +174,7 @@ Fetch all products from the Supabase database with selected fields.
 
 ---
 
-### 3. Get Warehouse Stock by Product ID
+### 4. Get Warehouse Stock by Product ID
 
 **GET** `/v1/warehouse/:id`
 
@@ -172,7 +217,7 @@ Returns an object with warehouse locations as keys and stock quantities as value
 
 ---
 
-### 4. Search Locations
+### 5. Search Locations
 
 **POST** `/v1/list-location`
 
@@ -220,7 +265,7 @@ Search for locations using autocomplete (Paxel API integration).
 
 ---
 
-### 5. Check Shipping Cost
+### 6. Check Shipping Cost
 
 **POST** `/v1/check-ongkir`
 
@@ -276,7 +321,7 @@ Calculate shipping costs for a delivery via Paxel.
 
 ---
 
-### 6. Track Shipment
+### 7. Track Shipment
 
 **POST** `/v1/check-resi`
 
@@ -318,7 +363,7 @@ Track a shipment using its tracking code via Paxel.
 
 ---
 
-### 7. Get Market Prices
+### 8. Get Market Prices
 
 **GET** `/v1/market-prices`
 
@@ -346,7 +391,7 @@ Fetch current market prices for gold and silver.
 
 ---
 
-### 8. Update Market Prices
+### 9. Update Market Prices
 
 **PUT** `/v1/market-prices`
 
@@ -386,6 +431,39 @@ Update market prices for gold and silver.
 ```
 
 500 Internal Server Error:
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+---
+
+### 10. Get Knowledge Base Articles
+
+**GET** `/v1/knowledge`
+
+Fetch all knowledge base articles from the Supabase database.
+
+**Response:**
+
+```json
+[
+  {
+    "id": "...",
+    "title": "Cara Investasi Emas untuk Pemula",
+    "content": "...",
+    "category": "Investment Guide",
+    "created_at": "2023-11-28T07:00:00.000Z",
+    "updated_at": "2023-11-28T07:00:00.000Z"
+  }
+]
+```
+
+**Note:** Returns all columns from the knowledge table. Actual fields may vary based on your database schema.
+
+**Error Response:**
 
 ```json
 {
