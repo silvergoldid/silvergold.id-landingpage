@@ -45,7 +45,7 @@ export { Navigation, Hero, PriceBar, Catalog, Benefits, HowToBuy, FAQ, Footer };
 // ============================================================================
 
 const heroImageSrc =
-  "https://silvergold.lovable.app/assets/hero-precious-metals-CLcrZG1n.jpg";
+  "https://images.pexels.com/photos/34962375/pexels-photo-34962375.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 const goldBarImageSrc =
   "https://silvergold.lovable.app/assets/gold-bar-D2ySwO4d.jpg";
 const silverBarImageSrc =

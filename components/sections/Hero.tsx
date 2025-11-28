@@ -25,8 +25,25 @@ export const Hero: React.FC<HeroProps> = ({
     }
   };
   return (
-    <section id="home" className="min-h-screen flex items-center pt-20">
-      <div className="container mx-auto px-4 lg:px-8 py-16">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+    >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={heroImageSrc}
+          alt="Gold and silver investment background"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
+
+      <div className="container mx-auto px-4 lg:px-8 py-16 relative z-10">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-10">
           Mulai Investasi <span className="text-gradient-gold">Emas</span> &{" "}
           <span className="text-gradient-silver">Perak</span>
@@ -103,7 +120,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Right Image */}
-          <div className="relative">
+          {/* <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-gold/20 to-silver/20 rounded-2xl blur-3xl" />
             <Image
               src={heroImageSrc}
@@ -114,7 +131,7 @@ export const Hero: React.FC<HeroProps> = ({
               fetchPriority="high"
               className="relative rounded-2xl shadow-2xl w-full h-auto object-cover"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

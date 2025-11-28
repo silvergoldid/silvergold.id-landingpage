@@ -8,6 +8,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Beams from "@/components/reactbits/Beams";
 
 export interface FooterProps {
   onWhatsAppClick: () => void;
@@ -28,33 +29,53 @@ export const Footer: React.FC<FooterProps> = ({
   );
 
   return (
-    <footer id="contact" className="bg-charcoal border-t border-gold/30 py-20">
+    <footer
+      id="contact"
+      className="bg-charcoal border-t border-gold/30 pt-20 pb-10"
+    >
       <div className="container mx-auto px-4 lg:px-8">
         {/* WhatsApp CTA Banner */}
-        <div className="bg-gradient-to-r from-gold via-amber-500 to-gold rounded-2xl p-6 md:p-8 mb-12 shadow-xl shadow-gold/20">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Left - Trust Message */}
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground mb-2">
-                Platform Terpercaya untuk
-                <br className="hidden md:block" />
-                Investasi Emas & Perak.
-              </h3>
-              <p className="text-sm md:text-base text-primary-foreground/90">
-                Konsultasi gratis dengan spesialis logam mulia kami
-              </p>
-            </div>
+        <div className="relative rounded-2xl mb-12 shadow-xl shadow-gold/20 overflow-hidden min-h-[200px]">
+          {/* Animated Beams Background */}
+          <div className="absolute inset-0 w-full h-full">
+            <Beams
+              beamWidth={3}
+              beamHeight={30}
+              beamNumber={20}
+              lightColor="#ffffff"
+              speed={2}
+              noiseIntensity={1.75}
+              scale={0.2}
+              rotation={90}
+            />
+          </div>
 
-            {/* Right - WhatsApp Button */}
-            <Button
-              size="lg"
-              variant="outline"
-              className="bg-white hover:bg-gray-100 text-charcoal border-0 shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap flex-shrink-0"
-              onClick={onWhatsAppClick}
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Chat WhatsApp
-            </Button>
+          {/* Content Overlay */}
+          <div className="relative z-10 bg-black/20 p-6 md:p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              {/* Left - Trust Message */}
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
+                  Platform Terpercaya untuk
+                  <br className="hidden md:block" />
+                  Investasi Emas & Perak.
+                </h3>
+                <p className="text-sm md:text-base text-white/90">
+                  Konsultasi gratis dengan spesialis logam mulia kami
+                </p>
+              </div>
+
+              {/* Right - WhatsApp Button */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-gold hover:bg-gold-dark text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap flex-shrink-0"
+                onClick={onWhatsAppClick}
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Chat WhatsApp
+              </Button>
+            </div>
           </div>
         </div>
 
