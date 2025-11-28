@@ -36,12 +36,6 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-8">
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Mulai bangun portofolio logam mulia Anda tanpa tekanan, tanpa
-              minimal pembelian besar, dan tanpa proses rumit. Transparan,
-              terpercaya, dan terjangkau untuk semua kalangan.
-            </p>
-
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />

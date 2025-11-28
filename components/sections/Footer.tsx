@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           {/* Center - Social Media & Email */}
-          <div className="flex flex-col space-y-3 items-center">
+          <div className="flex flex-col space-y-3 items-start md:items-center">
             <h5 className="font-semibold text-base md:text-lg text-gold mb-2 pt-7">
               Ikuti Kami
             </h5>

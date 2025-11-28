@@ -99,6 +99,32 @@ app.get("/", (req, res) => {
 });
 
 // Get all products
+app.get("/v1/product", async (req, res) => {
+  try {
+    // Fetch products (single query for better performance)
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, metal, name, weight, purity, price, description, condition")
+      .in("metal", ["Gold", "Silver"]);
+
+    if (error) throw error;
+
+    // Filter to get 2 gold and 2 silver products
+    const goldProducts = (data || [])
+      .filter((p) => p.metal === "Gold")
+      .slice(0, 2);
+    const silverProducts = (data || [])
+      .filter((p) => p.metal === "Silver")
+      .slice(0, 2);
+    const products = [...goldProducts, ...silverProducts];
+
+    res.json(products);
+  } catch (error) {
+    console.error("Products error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get("/v1/products", async (req, res) => {
   try {
     const { data, error } = await supabase

@@ -82,7 +82,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-4">
             <Button
               variant="outline"
               className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300 text-sm md:text-base"
