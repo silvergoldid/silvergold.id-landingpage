@@ -51,31 +51,31 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="hidden md:flex items-center gap-8">
             <button
               onClick={() => scrollToSection("home")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
+              className="text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors"
             >
               Beranda
             </button>
             <button
               onClick={() => scrollToSection("catalog")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
+              className="text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors"
             >
               Katalog
             </button>
             <button
               onClick={() => scrollToSection("how-to-buy")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
+              className="text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors"
             >
               Cara Beli
             </button>
             <button
               onClick={() => scrollToSection("faq")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
+              className="text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors"
             >
               FAQ
             </button>
             <button
               onClick={() => scrollToSection("contact")}
-              className="text-foreground/80 hover:text-foreground transition-colors"
+              className="text-sm md:text-base text-foreground/80 hover:text-foreground transition-colors"
             >
               Kontak
             </button>
@@ -85,7 +85,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300"
+              className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300 text-sm md:text-base"
               onClick={onWhatsAppClick}
             >
               <MessageCircle className="mr-2 h-4 w-4" />
@@ -119,7 +119,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 scrollToSection("home");
                 setIsMobileMenuOpen(false);
               }}
-              className="text-left text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
+              className="text-left text-base text-foreground/80 hover:text-foreground hover:translate-x-2 transition-all py-2"
             >
               Beranda
             </button>

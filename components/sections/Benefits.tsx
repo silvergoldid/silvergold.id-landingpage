@@ -40,11 +40,11 @@ export const Benefits: React.FC = () => {
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Kenapa Memilih{" "}
             <span className="text-gradient-gold">silvergold.id</span>?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Harga real-time, produk resmi, dan proses pembelian yang dibuat
             sesederhana mungkin.
           </p>
@@ -59,10 +59,15 @@ export const Benefits: React.FC = () => {
               >
                 <CardContent className="p-6 text-center space-y-4">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/10 border border-gold/50">
-                    <benefit.icon className="h-8 w-8 text-gold" />
+                    <benefit.icon
+                      className="h-8 w-8 text-gold"
+                      aria-hidden="true"
+                    />
                   </div>
-                  <h3 className="text-xl font-semibold">{benefit.title}</h3>
-                  <p className="text-muted-foreground text-sm">
+                  <h3 className="text-lg md:text-xl font-semibold">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm md:text-base">
                     {benefit.description}
                   </p>
                 </CardContent>

@@ -14,21 +14,22 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50";
+      "inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden group cursor-pointer";
 
     const variants = {
-      default: "bg-primary text-primary-foreground hover:bg-primary/90",
+      default:
+        "bg-gradient-to-r from-gold via-amber-500 to-gold text-primary-foreground shadow-lg shadow-gold/30 hover:shadow-xl hover:shadow-gold/50 hover:scale-[1.02] before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700",
       outline:
-        "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "text-primary underline-offset-4 hover:underline",
+        "border-2 border-gold/50 bg-transparent text-gold hover:bg-gold/10 hover:border-gold hover:shadow-lg hover:shadow-gold/20 backdrop-blur-sm",
+      ghost: "text-gold hover:bg-gold/10 hover:text-gold-dark",
+      link: "text-gold underline-offset-4 hover:underline hover:text-gold-dark",
     };
 
     const sizes = {
-      default: "h-10 px-4 py-2",
-      sm: "h-9 rounded-md px-3",
-      lg: "h-11 rounded-md px-8",
-      icon: "h-10 w-10",
+      default: "h-11 px-6 py-2.5 text-sm",
+      sm: "h-9 rounded-md px-4 text-xs",
+      lg: "h-13 rounded-lg px-10 text-base",
+      icon: "h-11 w-11",
     };
 
     return (

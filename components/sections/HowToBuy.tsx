@@ -38,11 +38,11 @@ export const HowToBuy: React.FC = () => {
     <section id="how-to-buy" className="py-20 bg-charcoal/50">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Cara Membeli di{" "}
             <span className="text-gradient-gold">silvergold.id</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Proses pembelian dirancang sederhana dan aman, agar Anda dapat
             bertransaksi dengan nyaman.
           </p>
@@ -62,12 +62,14 @@ export const HowToBuy: React.FC = () => {
                   <CardContent className="p-6 text-center space-y-4 flex flex-col flex-1 items-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gold/10 border-2 border-gold/50 relative">
                       <step.icon className="h-10 w-10 text-gold" />
-                      <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gold text-primary-foreground flex items-center justify-center text-sm font-bold">
+                      <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-gold text-primary-foreground flex items-center justify-center text-xs md:text-sm font-bold">
                         {step.number}
                       </div>
                     </div>
-                    <h3 className="text-xl font-semibold">{step.title}</h3>
-                    <p className="text-muted-foreground text-sm">
+                    <h3 className="text-lg md:text-xl font-semibold">
+                      {step.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm md:text-base">
                       {step.description}
                     </p>
                   </CardContent>
@@ -77,6 +79,27 @@ export const HowToBuy: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* HowTo Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "Cara Membeli Emas & Perak di silvergold.id",
+            description:
+              "Panduan langkah demi langkah untuk membeli logam mulia emas dan perak secara aman di silvergold.id.",
+            step: stepsData.map((step, index) => ({
+              "@type": "HowToStep",
+              position: index + 1,
+              name: step.title,
+              text: step.description,
+              image: "https://silvergold.id/logo.png", // Replace with actual step images if available
+            })),
+          }),
+        }}
+      />
     </section>
   );
 };

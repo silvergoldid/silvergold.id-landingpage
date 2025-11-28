@@ -27,6 +27,9 @@ const axiosInstance = axios.create({
   timeout: 10000,
 });
 
+//
+const MARKET_PRICE_ID = process.env.MARKET_PRICE_ID;
+
 // Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -221,6 +224,55 @@ app.post("/v1/check-resi", async (req, res) => {
   } catch (error) {
     console.error("Track shipment error:", error);
     res.status(500).json({ error: "Failed to track shipment" });
+  }
+});
+
+// URL: GET /v1/market-prices
+app.get("/v1/market-prices", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("market_prices")
+      .select("gold_price, silver_price, last_updated")
+      .eq("id", MARKET_PRICE_ID)
+      .single();
+
+    if (error) throw error;
+
+    res.json(data);
+  } catch (error) {
+    console.error("Fetch Price Error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Body: { "gold": 2360000, "silver": 32000 }
+app.put("/v1/market-prices", async (req, res) => {
+  try {
+    const { gold, silver } = req.body;
+
+    if (!gold || !silver) {
+      return res
+        .status(400)
+        .json({ error: "Gold and Silver prices are required" });
+    }
+
+    const { data, error } = await supabase
+      .from("market_prices")
+      .update({
+        gold_price: gold,
+        silver_price: silver,
+        last_updated: new Date(),
+      })
+      .eq("id", MARKET_PRICE_ID)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    res.json({ message: "Prices updated successfully", data });
+  } catch (error) {
+    console.error("Update Price Error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
