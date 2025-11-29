@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { formatRupiah, parseWeight } from "@/lib/utils";
 
 export interface Product {
   id: string;
@@ -26,6 +27,7 @@ export interface MarketPrice {
 
 export interface CatalogProps {
   products: Product[];
+  price: MarketPrice;
   onWhatsAppClick: (message: string | null) => void;
   goldBarImageSrc: string;
   silverBarImageSrc: string;
@@ -34,18 +36,30 @@ export interface CatalogProps {
 // Product Card Component with Lazy Loading
 const ProductCard: React.FC<{
   product: Product;
+  price: MarketPrice;
   goldBarImageSrc: string;
   silverBarImageSrc: string;
   onWhatsAppClick: (message: string | null) => void;
   index: number;
 }> = ({
   product,
+  price,
   goldBarImageSrc,
   silverBarImageSrc,
   onWhatsAppClick,
   index,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Calculate estimated price
+  const unitPrice =
+    product.metal === "Gold" ? price.gold_price : price.silver_price;
+
+  const weightVal = parseWeight(product.weight);
+  const estimatedPrice =
+    unitPrice && !isNaN(parseFloat(unitPrice))
+      ? weightVal * parseFloat(unitPrice)
+      : null;
 
   return (
     <Card className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col w-[85vw] sm:w-[320px] lg:w-auto flex-shrink-0 lg:flex-shrink-0 h-auto self-stretch">
@@ -101,7 +115,11 @@ const ProductCard: React.FC<{
 
           <div className="pt-3 border-t border-border mt-auto">
             <p className="text-xl md:text-2xl font-bold text-gold mb-1">
-              {product.price}
+              {estimatedPrice ? (
+                formatRupiah(estimatedPrice.toString())
+              ) : (
+                <span className="inline-block h-8 w-32 bg-gold/20 animate-pulse rounded"></span>
+              )}
             </p>
             <p className="text-xs md:text-sm text-muted-foreground">
               *Harga indikatif, final dikonfirmasi via WhatsApp.
@@ -145,6 +163,7 @@ const ProductCardSkeleton: React.FC = () => (
 
 export const Catalog: React.FC<CatalogProps> = ({
   products,
+  price,
   onWhatsAppClick,
   goldBarImageSrc,
   silverBarImageSrc,
@@ -166,7 +185,6 @@ export const Catalog: React.FC<CatalogProps> = ({
   });
 
   // Generate Product schema for first few products (to avoid excessive data)
-  // Generate Product schema for first few products (to avoid excessive data)
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -179,7 +197,7 @@ export const Catalog: React.FC<CatalogProps> = ({
         description: product.description,
         offers: {
           "@type": "Offer",
-          price: product.price.replace(/[^0-9]/g, ""),
+          // price: product.price.replace(/[^0-9]/g, ""),
           priceCurrency: "IDR",
           availability: "https://schema.org/InStock",
           seller: {
@@ -271,6 +289,7 @@ export const Catalog: React.FC<CatalogProps> = ({
                   <ProductCard
                     key={product.id}
                     product={product}
+                    price={price}
                     goldBarImageSrc={goldBarImageSrc}
                     silverBarImageSrc={silverBarImageSrc}
                     onWhatsAppClick={onWhatsAppClick}

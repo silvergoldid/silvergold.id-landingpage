@@ -148,6 +148,7 @@ export const IndexPage = () => {
       <PriceBar marketPrice={marketPrice} />
       <Catalog
         products={products}
+        price={marketPrice}
         onWhatsAppClick={(msg) => handleWhatsAppClick(msg)}
         goldBarImageSrc={goldBarImageSrc}
         silverBarImageSrc={silverBarImageSrc}
