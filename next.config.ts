@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "silvergold.lovable.app",
+        hostname: "images.pexels.com",
       },
       {
         protocol: "https",
-        hostname: "images.pexels.com",
+        hostname: "silvergold.lovable.app",
       },
     ],
     formats: ["image/webp", "image/avif"],
@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1 year,
     qualities: [50, 75, 80],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === "production",
   },
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header

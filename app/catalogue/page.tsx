@@ -7,7 +7,7 @@ import { MessageCircle, ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { handleWhatsAppClick } from "@/lib/utils";
+import { handleWhatsAppClick, formatRupiah, parseWeight } from "@/lib/utils";
 
 // export const metadata = {
 //   title: "Katalog Lengkap Emas & Perak | silvergold.id",
@@ -31,21 +31,38 @@ interface Product {
   condition: string;
 }
 
+interface MarketPrice {
+  gold_price: string;
+  silver_price: string;
+}
+
 // Product Card Component
 const ProductCard: React.FC<{
   product: Product;
+  price: MarketPrice;
   goldBarImageSrc: string;
   silverBarImageSrc: string;
   onWhatsAppClick: () => void;
   index: number;
 }> = ({
   product,
+  price,
   goldBarImageSrc,
   silverBarImageSrc,
   onWhatsAppClick,
   index,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Calculate estimated price
+  const unitPrice =
+    product.metal === "Gold" ? price.gold_price : price.silver_price;
+
+  const weightVal = parseWeight(product.weight);
+  const estimatedPrice =
+    unitPrice && !isNaN(parseFloat(unitPrice))
+      ? weightVal * parseFloat(unitPrice)
+      : null;
 
   return (
     <Card className="bg-card border-border hover:border-gold/50 transition-all duration-300 overflow-hidden group flex flex-col">
@@ -106,8 +123,15 @@ const ProductCard: React.FC<{
           </div>
 
           <div className="mt-auto">
-            <p className="text-xl md:text-3xl font-bold text-gold mb-4">
-              {product.price}
+            <p className="text-xl md:text-3xl font-bold text-gold mb-1">
+              {estimatedPrice ? (
+                formatRupiah(estimatedPrice.toString())
+              ) : (
+                <span className="inline-block h-8 w-32 bg-gold/20 animate-pulse rounded"></span>
+              )}
+            </p>
+            <p className="text-xs md:text-sm text-muted-foreground mb-4">
+              *Harga indikatif, final dikonfirmasi via WhatsApp.
             </p>
 
             <Button
@@ -126,6 +150,10 @@ const ProductCard: React.FC<{
 
 export default function CataloguePage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [marketPrice, setMarketPrice] = useState<MarketPrice>({
+    gold_price: "",
+    silver_price: "",
+  });
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"Semua" | "Emas" | "Perak">("Semua");
   const [weightFilter, setWeightFilter] = useState<string | null>(null);
@@ -139,14 +167,23 @@ export default function CataloguePage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "https://silvergold-id-landingpage.onrender.com/v1/products"
-        );
-        if (!response.ok) throw new Error("Failed to fetch products");
-        const data = await response.json();
-        setProducts(data);
+        const [productsRes, pricesRes] = await Promise.all([
+          fetch("https://silvergold-id-landingpage.onrender.com/v1/products"),
+          fetch(
+            "https://silvergold-id-landingpage.onrender.com/v1/market-prices"
+          ),
+        ]);
+
+        if (!productsRes.ok || !pricesRes.ok)
+          throw new Error("Failed to fetch data");
+
+        const productsData = await productsRes.json();
+        const pricesData = await pricesRes.json();
+
+        setProducts(productsData);
+        setMarketPrice(pricesData);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -309,11 +346,12 @@ export default function CataloguePage() {
                   <ProductCard
                     key={product.id}
                     product={product}
+                    price={marketPrice}
                     goldBarImageSrc={goldBarImageSrc}
                     silverBarImageSrc={silverBarImageSrc}
                     onWhatsAppClick={() =>
                       handleWhatsAppClick(
-                        `Halo kak, saya mau pesan ${product.name}`
+                        `Halo kak, saya mau pesan ${product.name} \n _${product.id}_`
                       )
                     }
                     index={index}
