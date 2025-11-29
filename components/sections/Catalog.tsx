@@ -26,7 +26,7 @@ export interface MarketPrice {
 
 export interface CatalogProps {
   products: Product[];
-  onWhatsAppClick: () => void;
+  onWhatsAppClick: (message: string | null) => void;
   goldBarImageSrc: string;
   silverBarImageSrc: string;
 }
@@ -36,7 +36,7 @@ const ProductCard: React.FC<{
   product: Product;
   goldBarImageSrc: string;
   silverBarImageSrc: string;
-  onWhatsAppClick: () => void;
+  onWhatsAppClick: (message: string | null) => void;
   index: number;
 }> = ({
   product,
@@ -110,7 +110,9 @@ const ProductCard: React.FC<{
 
           <Button
             className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300 text-sm md:text-base whitespace-nowrap"
-            onClick={onWhatsAppClick}
+            onClick={() =>
+              onWhatsAppClick(`Halo kak, saya mau pesan ${product.name}`)
+            }
           >
             <MessageCircle className="mr-2 h-4 w-4" />
             Pesan via WhatsApp

@@ -1,6 +1,6 @@
 import React from "react";
 import { type MarketPrice } from "./Catalog";
-import { formatRupiah } from "../utils/rupiah";
+import { formatRupiah } from "../../lib/utils";
 
 interface PriceBarProps {
   marketPrice: MarketPrice;

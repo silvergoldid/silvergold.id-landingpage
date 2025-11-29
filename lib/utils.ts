@@ -9,12 +9,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function handleContactUs() {
+export const handleWhatsAppClick = (data: string | null) => {
   const phoneNumber = "6285110328180";
-  const message =
-    "Halo, saya ingin mengetahui lebih detail tentang produk yang saya inginkan.";
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-    message
-  )}`;
-  window.open(whatsappUrl, "_blank");
-}
+  window.open(
+    data
+      ? `https://wa.me/${phoneNumber}?text=${encodeURIComponent(data)}`
+      : `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+          "Halo kak, saya tertarik dan mau konsultasi untuk pembelian emas/perak"
+        )}`,
+    "_blank"
+  );
+};
+
+export const formatRupiah = (value: string) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(Number(value));
+};

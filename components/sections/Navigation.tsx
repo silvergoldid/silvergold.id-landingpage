@@ -3,7 +3,7 @@ import { MessageCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export interface NavigationProps {
-  onWhatsAppClick: () => void;
+  onWhatsAppClick: (message: string | null) => void;
   logoSrc: string;
 }
 
@@ -91,7 +91,11 @@ export const Navigation: React.FC<NavigationProps> = ({
               variant="outline"
               size="sm"
               className="border-gold text-gold hover:bg-gold hover:text-primary-foreground transition-all duration-300 text-xs md:text-base md:px-4 px-2 h-9 md:h-10"
-              onClick={onWhatsAppClick}
+              onClick={() =>
+                onWhatsAppClick(
+                  "Halo kak, saya tertarik dan mau konsultasi untuk pembelian emas/perak"
+                )
+              }
             >
               <MessageCircle className="md:mr-2 h-4 w-4" />
               <span className="hidden md:inline">Konsultasi</span>
