@@ -351,7 +351,7 @@ export default function CataloguePage() {
                     silverBarImageSrc={silverBarImageSrc}
                     onWhatsAppClick={() =>
                       handleWhatsAppClick(
-                        `Halo kak, saya mau pesan ${product.name}`
+                        `Halo kak, saya mau pesan ${product.name} \n _${product.id}_`
                       )
                     }
                     index={index}

@@ -129,7 +129,9 @@ const ProductCard: React.FC<{
           <Button
             className="w-full bg-gold hover:bg-gold-dark text-primary-foreground transition-all duration-300 text-sm md:text-base whitespace-nowrap"
             onClick={() =>
-              onWhatsAppClick(`Halo kak, saya mau pesan ${product.name}`)
+              onWhatsAppClick(
+                `Halo kak, saya mau pesan ${product.name} \n _${product.id}_`
+              )
             }
           >
             <MessageCircle className="mr-2 h-4 w-4" />
