@@ -104,7 +104,7 @@ app.get("/v1/product", async (req, res) => {
     // Fetch products (single query for better performance)
     const { data, error } = await supabase
       .from("products")
-      .select("id, metal, name, weight, purity, price, description, condition")
+      .select("id, metal, name, weight, purity, description, condition")
       .in("metal", ["Gold", "Silver"]);
 
     if (error) throw error;
@@ -129,7 +129,7 @@ app.get("/v1/products", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("products")
-      .select("id, metal, name, weight, purity, price, description, condition");
+      .select("id, metal, name, weight, purity, description, condition");
 
     if (error) throw error;
 

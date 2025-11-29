@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Home, MessageCircle, Search, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { handleWhatsAppClick } from "@/lib/utils";
 
 export default function NotFound() {
   return (
@@ -56,21 +57,15 @@ export default function NotFound() {
               Kembali ke Beranda
             </Button>
           </Link>
-          <a
-            href="https://wa.me/6285110328180"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto"
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-full sm:w-auto border-gold text-gold hover:bg-gold hover:text-primary-foreground font-semibold transition-all duration-300 hover:scale-105"
+            onClick={() => handleWhatsAppClick("Halo kak, saya butuh bantuan")}
           >
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto border-gold text-gold hover:bg-gold hover:text-primary-foreground font-semibold transition-all duration-300 hover:scale-105"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Hubungi Kami
-            </Button>
-          </a>
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Hubungi Kami
+          </Button>
         </div>
 
         {/* Enhanced Quick Links Section */}

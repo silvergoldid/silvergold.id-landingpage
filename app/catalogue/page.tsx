@@ -7,6 +7,7 @@ import { MessageCircle, ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { handleWhatsAppClick } from "@/lib/utils";
 
 // export const metadata = {
 //   title: "Katalog Lengkap Emas & Perak | silvergold.id",
@@ -153,14 +154,6 @@ export default function CataloguePage() {
 
     fetchProducts();
   }, []);
-
-  const handleWhatsAppClick = () => {
-    const phoneNumber = "6285183306699";
-    const message = encodeURIComponent(
-      "Halo, saya tertarik untuk membeli logam mulia dari silvergold.id"
-    );
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
-  };
 
   const filteredProducts = products.filter((product) => {
     // Filter by metal type
@@ -318,7 +311,11 @@ export default function CataloguePage() {
                     product={product}
                     goldBarImageSrc={goldBarImageSrc}
                     silverBarImageSrc={silverBarImageSrc}
-                    onWhatsAppClick={handleWhatsAppClick}
+                    onWhatsAppClick={() =>
+                      handleWhatsAppClick(
+                        `Halo kak, saya mau pesan ${product.name}`
+                      )
+                    }
                     index={index}
                   />
                 ))}

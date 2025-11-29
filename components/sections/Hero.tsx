@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export interface HeroProps {
-  onWhatsAppClick: () => void;
+  onWhatsAppClick: (message: string | null) => void;
   heroImageSrc: string;
 }
 
@@ -86,7 +86,11 @@ export const Hero: React.FC<HeroProps> = ({
               <Button
                 size="lg"
                 className="bg-gold hover:bg-gold-dark text-primary-foreground glow-gold transition-all duration-300 text-sm md:text-lg whitespace-nowrap"
-                onClick={onWhatsAppClick}
+                onClick={() =>
+                  onWhatsAppClick(
+                    "Halo kak, saya tertarik untuk investasi emas/perak"
+                  )
+                }
               >
                 Pesan via WhatsApp
               </Button>
@@ -100,7 +104,7 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap gap-6 pt-4">
+            <div className="grid grid-cols-2 gap-6 pt-4">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <ShieldCheck className="h-5 w-5 text-gold" />
                 <span className="text-sm md:text-base">Toko terpercaya</span>
